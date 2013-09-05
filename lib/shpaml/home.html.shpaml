@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+
+	.map.widget data-widget=network.Map | {##}
+
+{% endblock %}

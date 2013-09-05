@@ -1,0 +1,80 @@
+[
+	{
+		"type" : "person",
+		"name" : "Pierre Romera",
+		"github" : "https://github.com/Pirhoo",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Gregor Aisch",
+		"github" : "https://github.com/gka",
+		"geo" : {
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Edouard Richard",
+		"github" : "https://github.com/gka",
+		"geo" : {
+			"lon": 14.23653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "project",
+		"name" : "La Contre Histoire des Internets",
+		"link" : "lesinternets.arte.tv"
+	},
+
+	{
+		"type" : "company",
+		"name" : "Arte",
+		"link" : "arte.tv",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+
+	{
+		"type" : "event",
+		"title" : "Hackathon NASA",
+		"location" : "la cantine, Paris",
+		"date" : "",
+		"link" : "",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+
+	{
+		"type" : "event",
+		"title" : "Evengelisation en Espagne",
+		"location" : "Madrid",
+		"date" : "",
+		"link" : "",
+		"geo" : {
+			"lon": -3.705802,
+			"lat": 40.420279
+		}
+	},
+
+	{
+		"type" : "event",
+		"title" : "Rencontre à Montain View à propos de spending stories",
+		"location" : "Google inc",
+		"date" : "",
+		"link" : "",
+		"geo" : {
+			"lon": -122.475586,
+			"lat": 37.791880
+		}
+	}
+]

@@ -1,0 +1,6 @@
+.hidden:
+	display:none
+
+body:
+	font-family: 'Ubuntu', sans-serif
+	background-color 	: #F2F2F2
