@@ -17,10 +17,10 @@
 
 .entity:
 	fill: #E3E8EC
-  	-webkit-transition: stroke,stroke-width  0.25s linear
+  	-webkit-transition: r,stroke,stroke-width  0.25s linear
 	&:hover:
 		fill: #fff
-	stroke-width: 0.4px
+	stroke-width: 0.7px
 	stroke:#9F9F9F
 
 

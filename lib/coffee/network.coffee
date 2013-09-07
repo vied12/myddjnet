@@ -29,6 +29,7 @@ class network.Map extends Widget
 
 	bindUI: (ui) =>
 		super
+		@that = this
 		@svg = d3.select(@ui.get(0))
 			.insert("svg", ":first-child")
 			.attr("width", $(window).width())
@@ -38,10 +39,11 @@ class network.Map extends Widget
 					.scale(1000)
 					.rotate([55,-70])
 					.clipAngle(90)
-					# .translate([0,0])
+					# .clipAngle(450)
+					.translate([680, 250])
 					# .clipExtent([[37.944483, 69.617072], [24.491810, 17.534404]])
 					# .translate([1000, 500])
-					# .precision(10)
+					# .precision(0)
 		# Create the globe path
 		@path = d3.geo.path().projection(@projection)   
 		 # Create the group of path and add graticule
@@ -63,6 +65,7 @@ class network.Map extends Widget
 			coord = if entry.geo then @projection([entry.geo.lon, entry.geo.lat]) else [0,0]
 			entry.qx = coord[0]
 			entry.qy = coord[1]
+			entry.radius = 6
 		@renderEntries(entries)
 
 	
@@ -72,40 +75,41 @@ class network.Map extends Widget
 			entries.forEach((entry, i) =>
 				entry.x += (entry.qx - entry.x) * k
 				entry.y += (entry.qy - entry.y) * k
-				# o.y += i & 1 ? k : -k
-				# o.x += i & 2 ? k : -k
 			)
-			circle
+			@circle
 				.attr('cx', (d)=>  return d.x)
 				.attr('cy', (d)=>  return d.y)
 
 		@force = d3.layout.force()
 					.nodes(entries)
 					.gravity(0)
-					.charge(-10)
+					.charge((d) -> return -Math.pow(d.radius, 2.0) / 7)
 					.size([$(window).width(), $(window).height()])
 					.on("tick", tick)
 					.start()
 
-		circle = @groupPaths.selectAll(".entity")
+		that = this
+		@circle = @groupPaths.selectAll(".entity")
 			.data(entries)
 			.enter().append('circle')
 			.attr('class', 'entity')
 			.attr('r', 6)
 			.call(@force.drag)
-			.on("mousedown", @onhouseover)
+			.on("mousedown", (e,d ) ->
+				e.radius = if (Number(d3.select(this).attr('r')) == 6) then 30 else 6
+				console.log(e,d)
+				that.force.stop()
+				d3.select(this)
+					# .transition().duration(250)
+					.attr('r', (d) -> return d.radius)
+				that.force.start()
+			)
 
-	onhouseover: (e) =>
-		console.log "hovewr", e
-		@groupPaths.select(".dialog")
-			.insert('path')
-			.attr("class", ".dialog")
-			.attr("cx", e.x)
-			.attr("cy", e.y)
-			.attr("fill", "red")
-			.attr("width", 100)
-			.attr("height", 100)
-
+		# @groupPaths.append('circle')
+		# 	.attr('r', 22)
+		# 	.attr('fill', 'red')
+		# 	.attr('cx', 300)
+		# 	.attr('cy', 300)
 
 	renderCountries: (countries) =>
 		@groupPaths.selectAll(".country")

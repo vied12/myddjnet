@@ -19,6 +19,42 @@
 	},
 	{
 		"type" : "person",
+		"name" : "Sebastien Pierre",
+		"github" : "https://github.com/sebastien",
+		"geo" : {
+			"lon": -73.55443,
+			"lat": 45.51229
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "FFunction",
+		"github" : "http://ffctn.com",
+		"geo" : {
+			"lon": -73.55443,
+			"lat": 45.51229
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "We Do Data",
+		"github" : "",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "",
+		"github" : "",
+		"geo" : {
+			"lon": -70.650434,
+			"lat": -33.437938
+		}
+	},
+	{
+		"type" : "person",
 		"name" : "Edouard Richard",
 		"github" : "https://github.com/gka",
 		"geo" : {
