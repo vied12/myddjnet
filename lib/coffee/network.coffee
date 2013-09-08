@@ -68,8 +68,7 @@ class network.Map extends Widget
 	loadedDataCallback: (error, worldTopo, entries) =>
 		@countries = topojson.feature(worldTopo, worldTopo.objects.countries).features
 		@entries   = @computeEntries(entries)
-		console.log(entries)
-		@renderCountries(@countries)
+		@renderCountries()
 		@renderEntries()
 
 	computeEntries: (entries) ->
@@ -83,25 +82,22 @@ class network.Map extends Widget
 			entry
 
 	renderEntries: =>
-		that = @
-		tick = (e) =>
-			k = e.alpha * 0.1
-			@entries.forEach((entry, i) =>
-				entry.x += (entry.qx - entry.x) * k
-				entry.y += (entry.qy - entry.y) * k
-			)
-			@circle
-				.attr('cx', (d)=>  return d.x)
-				.attr('cy', (d)=>  return d.y)
-
+		that   = @
 		@force = d3.layout.force()
 					.nodes(@entries)
 					.gravity(0)
 					.charge((d) -> return -Math.pow(d.radius, 2.0) / 5)
 					.size([@width, @height])
-					.on("tick", tick)
+					.on("tick", (e) =>
+						k = e.alpha * 0.1
+						@entries.forEach (entry, i) =>
+							entry.x += (entry.qx - entry.x) * k
+							entry.y += (entry.qy - entry.y) * k
+						@circle
+							.attr('cx', (d)=>  return d.x)
+							.attr('cy', (d)=>  return d.y)
+					)
 					.start()
-
 		@circle = @groupPaths.selectAll(".entity")
 			.data(@entries)
 			.enter().append('circle')
@@ -119,9 +115,9 @@ class network.Map extends Widget
 				that.force.start()
 			)
 
-	renderCountries: (countries) =>
+	renderCountries: =>
 		@groupPaths.selectAll(".country")
-			.data(countries)
+			.data(@countries)
 			.enter()
 				.append("path")
 				.attr("d", @path)
@@ -143,7 +139,6 @@ class network.Map extends Widget
 		# resize the map
 		@svg.selectAll('.country').attr('d', @path)
 		@svg.selectAll('.graticule').attr('d', @path)
-		# @groupPaths.attr('d', @path)
 		@entries = @computeEntries(@entries)
 		@force.stop().start()
 
