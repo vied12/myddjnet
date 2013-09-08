@@ -24,19 +24,18 @@ class network.Map extends Widget
 
 	constructor: ->
 		@OPTIONS =
-			margin    : {top: 10, left: 10, bottom: 10, right: 10}
 			map_ratio : .5
 
 		@projection = undefined
 		@groupPaths = undefined
 		@path       = undefined
+		@force      = undefined
 		@width      = undefined
 		@height     = undefined
 
 	bindUI: (ui) =>
 		super
-		@width  = parseInt(d3.select(@ui.get(0)).style('width')) - @OPTIONS.margin.left - @OPTIONS.margin.right
-		@height = @width * @OPTIONS.map_ratio
+		@init_size()
 		@svg    = d3.select(@ui.get(0))
 			.insert("svg", ":first-child")
 			.attr("width", @width)
@@ -59,7 +58,7 @@ class network.Map extends Widget
 					.attr("class", "graticule")
 					.attr("d", @path)
 		# binds events
-		d3.select(window).on('resize', @resize)
+		d3.select(window).on('resize', @init_size)
 		queue()
 			.defer(d3.json, "/static/data/world.json")
 			.defer(d3.json, "/static/data/entries.json")
@@ -86,7 +85,7 @@ class network.Map extends Widget
 		@force = d3.layout.force()
 					.nodes(@entries)
 					.gravity(0)
-					.charge((d) -> return -Math.pow(d.radius, 2.0) / 5)
+					.charge((d) -> return -Math.pow(d.radius, 2.0) / 6)
 					.size([@width, @height])
 					.on("tick", (e) =>
 						k = e.alpha * 0.1
@@ -108,6 +107,7 @@ class network.Map extends Widget
 			.call(@force.drag)
 			.on("mousedown", (e,d ) ->
 				e.radius = if (Number(d3.select(this).attr('r')) == 6) then 30 else 6
+				e.opened = true
 				that.force.stop()
 				d3.select(this)
 					.transition().duration(250)
@@ -124,23 +124,27 @@ class network.Map extends Widget
 				.attr("class", "country")
 				.attr("fill", (d) -> return "#5C5D62")
 
-	resize: =>
+	init_size: =>
 		# adjust things when the window size changes
-		@width  = parseInt(d3.select(@ui.get(0)).style('width')) - @OPTIONS.margin.left - @OPTIONS.margin.right
+		@width  = parseInt(d3.select(@ui.get(0)).style('width'))
 		@height = @width * @OPTIONS.map_ratio
 		# update projection
-		@projection
-			.translate([@width / 2, @height / 2])
-			.scale(@width)
+		if @projection?
+			@projection
+				.translate([@width / 2, @height / 2])
+				.scale(@width)
 		 # resize the map container
-		@svg
-			.style('width' , @width  + 'px')
-			.style('height', @height + 'px')
-		# resize the map
-		@svg.selectAll('.country').attr('d', @path)
-		@svg.selectAll('.graticule').attr('d', @path)
-		@entries = @computeEntries(@entries)
-		@force.stop().start()
+		if @svg?
+			@svg
+				.style('width' , @width  + 'px')
+				.style('height', @height + 'px')
+			# resize the map
+			@svg.selectAll('.country').attr('d', @path)
+			@svg.selectAll('.graticule').attr('d', @path)
+		if @entries?
+			@entries = @computeEntries(@entries)
+		if @force?
+			@force.stop().start()
 
 start = ->
 	$(window).load ()->

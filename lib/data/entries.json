@@ -46,15 +46,6 @@
 	},
 	{
 		"type" : "person",
-		"name" : "",
-		"github" : "",
-		"geo" : {
-			"lon": -70.650434,
-			"lat": -33.437938
-		}
-	},
-	{
-		"type" : "person",
 		"name" : "Edouard Richard",
 		"github" : "https://github.com/gka",
 		"geo" : {
@@ -75,6 +66,33 @@
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"link" : "",
+		"geo" : {
+			"lon": 18.062835,
+			"lat": 59.332261
+		}
+	},
+		{
+		"type" : "company",
+		"name" : "J++",
+		"link" : "",
+		"geo" : {
+			"lon": 4.893189,
+			"lat": 52.3731
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "Wikileaks",
+		"link" : "",
+		"geo" : {
+			"lon": -0.127177,
+			"lat": 51.506301
 		}
 	},
 
