@@ -18,13 +18,20 @@ body:
 		&:hover:
 			fill: #4C4747
 
+	.city:
+		font-size: 0.7em
+
 	.entity:
-		fill               : #E3E8EC
+		fill               : #2B2B2B
 	  	-webkit-transition : r,stroke,stroke-width  0.25s linear
-		stroke-width       : 0.7px
+		stroke-width       : 2px
 		stroke             : #9F9F9F
+		&.person:
+			stroke: #A8D8FF
+		&.company:
+			stroke: #F8BDBD
 		&:hover:
-			fill: #fff
+			fill: #616161
 
 	.dialog:
 		background-color : green

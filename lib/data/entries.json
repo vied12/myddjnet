@@ -77,6 +77,15 @@
 			"lat": 59.332261
 		}
 	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"link" : "",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
 		{
 		"type" : "company",
 		"name" : "J++",

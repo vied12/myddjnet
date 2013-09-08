@@ -82,7 +82,7 @@ class network.Map extends Widget
 					# .translate([680, 250])
 					.translate([@width / 2, @height / 2])
 		# Create the globe path
-		@path = d3.geo.path().projection(@projection)   
+		@path = d3.geo.path().projection(@projection).pointRadius("2") 
 		 # Create the group of path and add graticule
 		@groupPaths = @svg.append("g").attr("class", "all-path")
 		graticule   = d3.geo.graticule()
@@ -126,7 +126,10 @@ class network.Map extends Widget
 			@force.stop().start()
 
 	loadedDataCallback: (error, worldTopo, entries) =>
-		@countries = topojson.feature(worldTopo, worldTopo.objects.countries).features
+		@countries = topojson.feature(worldTopo, worldTopo.objects.countries)
+		# Cities
+		# @cities    = topojson.feature(worldTopo, worldTopo.objects.capitals)
+		# @cities.features = @cities.features.filter((d)-> d.id in ['FRA','ESP', 'DEU', "GBR", "SWE"])
 		@entries   = @computeEntries(entries)
 		@renderCountries()
 		@renderEntries()
@@ -158,10 +161,11 @@ class network.Map extends Widget
 							.attr('cy', (d)=>  return d.y)
 					)
 					.start()
+
 		@circle = @groupPaths.selectAll(".entity")
 			.data(@entries)
 			.enter().append('circle')
-			.attr('class', 'entity')
+			.attr('class', (d) -> return d.type+" entity")
 			.attr('r', 6)
 			.attr('cx', (d)-> return d.qx)
 			.attr('cy', (d)-> return d.qy)
@@ -199,13 +203,31 @@ class network.Map extends Widget
 			.attr("y", d.y + 25)
 
 	renderCountries: =>
+		that = this
 		@groupPaths.selectAll(".country")
-			.data(@countries)
+			.data(@countries.features)
 			.enter()
 				.append("path")
 				.attr("d", @path)
 				.attr("class", "country")
 				.attr("fill", (d) -> return "#5C5D62")
+
+		# Cities
+		# @groupPaths.append("path")
+		# 	.datum(@cities)
+		# 	.attr("d", @path)
+		# 	.attr("class", "place")
+
+		# @groupPaths.selectAll(".city")
+		# 	.data(@cities.features)
+		# 	.enter()
+		# 		.append("text")
+		# 		.text((d)-> return d.properties.name)
+		# 		# .attr("d", @path)
+		# 		.attr("class", "city")
+		# 		.attr("transform", (d) -> return "translate(" + that.projection(d.geometry.coordinates) + ")")
+		# 		.attr("x", (d) -> return if d.geometry.coordinates[0] > -1 then 6 else -6)
+		# 		.style("text-anchor", (d) -> return if d.geometry.coordinates[0] > -1 then "start" else "end")
 
 start = ->
 	$(window).load ()->
