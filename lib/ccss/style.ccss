@@ -1,34 +1,47 @@
+body:
+	margin  : 0
+	padding : 0
+	text-align:center
 
-.graticule:
-	fill: none
-	stroke: #777
-	stroke-width: .5px
-	stroke-opacity: .5
+.Map:
+	.graticule:
+		fill             : none
+		stroke           : #777
+		stroke-width     : .5px
+		stroke-opacity   : .5
 
+	.country:
+		-webkit-transition : fill 0.25s linear
+		stroke             : #8F9092
+		stroke-width       : 1px
+		stroke-opacity     : 0.4
+		&:hover:
+			fill: #4C4747
 
-.country:
-	-webkit-transition: fill 0.25s linear
-	&:hover:
-		fill: #4C4747
-	stroke: #8F9092
-	stroke-width: 1px
-	stroke-opacity: 0.4
+	.entity:
+		fill               : #E3E8EC
+	  	-webkit-transition : r,stroke,stroke-width  0.25s linear
+		stroke-width       : 0.7px
+		stroke             : #9F9F9F
+		&:hover:
+			fill: #fff
 
+	.dialog:
+		background-color : green
 
-.entity:
-	fill: #E3E8EC
-  	-webkit-transition: r,stroke,stroke-width  0.25s linear
-	&:hover:
-		fill: #fff
-	stroke-width: 0.7px
-	stroke:#9F9F9F
+	.legend:
+		&.line:
+			stroke : black
+		&.text:
+			font-size:1em
+			color : #717171
 
+.primary.Map:
+	margin-top: 20px
+	svg:
+		border: 2px solid #444444
+		background-color: #E7EAF7
 
-.dialog:
-	background-color:green
-
-.legend:
-	&.line:
-		stroke: black
-	&.text:
-		color:#717171
+.Panel:
+	overflow:hidden
+	min-height: 100px

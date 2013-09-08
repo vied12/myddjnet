@@ -17,7 +17,40 @@ Utils    = window.serious.Utils
 
 # -----------------------------------------------------------------------------
 #
-#    NAVIGATION
+#    Page
+#
+# -----------------------------------------------------------------------------
+class network.Page extends Widget
+
+	constructor: ->
+		@UIS = {
+			map   : ".Map.primary"
+			panel : ".Panel"
+		}
+	
+	bindUI: (ui) =>
+		super
+		@relayout()
+		$(window).on('resize', @relayout)
+
+	relayout: =>
+		window_height = $(window).height()
+		@uis.panel.height(window_height * .2)
+		@uis.map.height(window_height - @uis.panel.outerHeight(true) - 20)
+
+
+# -----------------------------------------------------------------------------
+#
+#    Panel
+#
+# -----------------------------------------------------------------------------
+class network.Panel extends Widget
+
+	constructor: ->
+
+# -----------------------------------------------------------------------------
+#
+#    MAP
 #
 # -----------------------------------------------------------------------------
 class network.Map extends Widget
@@ -63,6 +96,34 @@ class network.Map extends Widget
 			.defer(d3.json, "/static/data/world.json")
 			.defer(d3.json, "/static/data/entries.json")
 			.await(@loadedDataCallback)
+
+	init_size: =>
+		# adjust things when the window size changes
+		width  = parseInt(d3.select(@ui.get(0)).style('width'))
+		height = parseInt(d3.select(@ui.get(0)).style('height'))
+		if width?
+			@width  = width
+			@height = @width * @OPTIONS.map_ratio
+			if height > 0 and @height > height
+				@height = height
+				@width  = @height / @OPTIONS.map_ratio
+		# update projection
+		if @projection?
+			@projection
+				.translate([@width / 2, @height / 2])
+				.scale(@width)
+		 # resize the map container
+		if @svg?
+			@svg
+				.style('width' , @width  + 'px')
+				.style('height', @height + 'px')
+			# resize the map
+			@svg.selectAll('.country').attr('d', @path)
+			@svg.selectAll('.graticule').attr('d', @path)
+		if @entries?
+			@entries = @computeEntries(@entries)
+		if @force?
+			@force.stop().start()
 
 	loadedDataCallback: (error, worldTopo, entries) =>
 		@countries = topojson.feature(worldTopo, worldTopo.objects.countries).features
@@ -145,28 +206,6 @@ class network.Map extends Widget
 				.attr("d", @path)
 				.attr("class", "country")
 				.attr("fill", (d) -> return "#5C5D62")
-
-	init_size: =>
-		# adjust things when the window size changes
-		@width  = parseInt(d3.select(@ui.get(0)).style('width'))
-		@height = @width * @OPTIONS.map_ratio
-		# update projection
-		if @projection?
-			@projection
-				.translate([@width / 2, @height / 2])
-				.scale(@width)
-		 # resize the map container
-		if @svg?
-			@svg
-				.style('width' , @width  + 'px')
-				.style('height', @height + 'px')
-			# resize the map
-			@svg.selectAll('.country').attr('d', @path)
-			@svg.selectAll('.graticule').attr('d', @path)
-		if @entries?
-			@entries = @computeEntries(@entries)
-		if @force?
-			@force.stop().start()
 
 start = ->
 	$(window).load ()->

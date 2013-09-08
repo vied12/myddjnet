@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-
-	.map.widget data-widget=network.Map | {##}
+	.Page.widget data-widget=network.Page
+		.Map.widget.primary data-widget=network.Map | {##}
+		.Panel.widget data-widget=network.Panel
+			h1 | titre
+			p | description
 
 {% endblock %}

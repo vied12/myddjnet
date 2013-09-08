@@ -48,8 +48,8 @@
 		"type" : "person",
 		"name" : "Edouard Richard",
 		"github" : "https://github.com/gka",
-		"geo" : {
-			"lon": 14.23653,
+		"geo" :{
+			"lon": 13.423653,
 			"lat": 52.473827
 		}
 	},
