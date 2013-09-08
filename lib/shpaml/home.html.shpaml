@@ -3,7 +3,7 @@
 	.Page.widget data-widget=network.Page
 		.Map.widget.primary data-widget=network.Map | {##}
 		.Panel.widget data-widget=network.Panel
-			h1 | titre
-			p | description
+			h1 | Datajournalism powered by Open Source Projects
+			p | My network after more one year working in datajournalism thanks to Open Source
 
 {% endblock %}
