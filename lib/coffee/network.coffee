@@ -105,6 +105,8 @@ class network.Map extends Widget
 			.attr('cx', (d)-> return d.qx)
 			.attr('cy', (d)-> return d.qy)
 			.call(@force.drag)
+			.on("mouseover", @showLegend)
+			.on("mouseout", -> d3.selectAll('.legend').remove())
 			.on("mousedown", (e,d ) ->
 				e.radius = if (Number(d3.select(this).attr('r')) == 6) then 30 else 6
 				e.opened = true
@@ -114,6 +116,26 @@ class network.Map extends Widget
 					.attr('r', (d) -> return d.radius)
 				that.force.start()
 			)
+
+	showLegend: (d,i) =>
+		d3.selectAll('.legend').remove()
+		@svg.append("svg:line")
+			.attr("class", "legend line")
+			.attr("x1", d.x)
+			.attr("y1", d.y)
+			.attr("x2", d.x + 25)
+			.attr("y2", d.y + 25)
+		@svg.append("svg:line")
+			.attr("class", "legend line")
+			.attr("x1", d.x+25)
+			.attr("y1", d.y + 25)
+			.attr("x2", d.x + 25 * 2)
+			.attr("y2", d.y + 25)
+		@svg.append("svg:text")
+			.attr("class", "legend text")
+			.text(d.description || d.title || d.name)
+			.attr("x", d.x + 25 * 2)
+			.attr("y", d.y + 25)
 
 	renderCountries: =>
 		@groupPaths.selectAll(".country")

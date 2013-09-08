@@ -26,3 +26,9 @@
 
 .dialog:
 	background-color:green
+
+.legend:
+	&.line:
+		stroke: black
+	&.text:
+		color:#717171
