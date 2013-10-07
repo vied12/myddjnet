@@ -1,8 +1,21 @@
 [
 	{
 		"type" : "person",
+		"id" : "pirhoo",
 		"name" : "Pierre Romera",
 		"github" : "https://github.com/Pirhoo",
+		"img"  : "images/pirhoo.png" ,
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
+		"id" : "toutenrab",
+		"name" : "Pierre Bellon",
+		"github" : "https://github.com/",
+		"img"  : "images/toutenrab.png" ,
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -47,7 +60,29 @@
 	{
 		"type" : "person",
 		"name" : "Edouard Richard",
+		"img"  : "images/vied12.png",
+		"id"   : "vied12",
 		"github" : "https://github.com/gka",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Nicolas Kayer-Bril",
+		"id"   : "nkb",
+		"img"  : "images/nkb.png",
+		"github" : "https://github.com/gka",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Anne-Lise Bouyer",
+		"id"   : "annelise",
 		"geo" :{
 			"lon": 13.423653,
 			"lat": 52.473827
@@ -84,7 +119,8 @@
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
-		}
+		},
+		"members" : ["vied12", "pirhoo", "nkb", "toutenrab", "annelise"]
 	},
 		{
 		"type" : "company",

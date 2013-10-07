@@ -25,7 +25,7 @@ class network.Page extends Widget
 	constructor: ->
 		@UIS = {
 			map   : ".Map.primary"
-			panel : ".Panel"
+			title : ".Title"
 		}
 	
 	bindUI: (ui) =>
@@ -35,18 +35,24 @@ class network.Page extends Widget
 
 	relayout: =>
 		window_height = $(window).height()
-		@uis.panel.height(window_height * .2)
-		@uis.map.height(window_height - @uis.panel.outerHeight(true) - 20)
-
+		@uis.title.height(window_height * .2)
+		@uis.map.height(window_height - @uis.title.outerHeight(true) - 20)
 
 # -----------------------------------------------------------------------------
 #
 #    Panel
 #
 # -----------------------------------------------------------------------------
-class network.Panel extends Widget
+# class network.Panel extends Widget
 
-	constructor: ->
+# 	constructor: ->
+
+# 	bindUI: =>
+# 		super
+# 		console.log('puet')
+
+# 	show: =>
+
 
 # -----------------------------------------------------------------------------
 #
@@ -59,12 +65,17 @@ class network.Map extends Widget
 		@OPTIONS =
 			map_ratio : .5
 
+		@UIS = {
+			panel : '.Panel'
+		}
+
 		@projection = undefined
 		@groupPaths = undefined
 		@path       = undefined
 		@force      = undefined
 		@width      = undefined
 		@height     = undefined
+		# @panel      = undefined
 
 	bindUI: (ui) =>
 		super
@@ -73,6 +84,7 @@ class network.Map extends Widget
 			.insert("svg", ":first-child")
 			.attr("width", @width)
 			.attr("height", @height)
+
 		# Create projection
 		@projection = d3.geo.stereographic()
 					.scale(@width)
@@ -96,6 +108,10 @@ class network.Map extends Widget
 			.defer(d3.json, "/static/data/world.json")
 			.defer(d3.json, "/static/data/entries.json")
 			.await(@loadedDataCallback)
+		# init panel
+		# @ui.append($("<div id='Panel' class='widget' data-widget='network.Panel'></div>"))
+		# @panel = Widget.ensureWidget('#Panel')
+		# @panel.show()
 
 	init_size: =>
 		# adjust things when the window size changes
@@ -107,6 +123,10 @@ class network.Map extends Widget
 			if height > 0 and @height > height
 				@height = height
 				@width  = @height / @OPTIONS.map_ratio
+		@ui.css(
+			width  : @width
+			height : @height
+		)
 		# update projection
 		if @projection?
 			@projection
@@ -124,6 +144,14 @@ class network.Map extends Widget
 			@entries = @computeEntries(@entries)
 		if @force?
 			@force.stop().start()
+		# panel
+		# height = @height *0.3
+		# @uis.panel.css(
+		# 	height : height
+		# 	width  : @width + 4
+		# 	top    : 0
+		# 	# "margin-left" : @ui.find('svg').offset().left
+		# )
 
 	loadedDataCallback: (error, worldTopo, entries) =>
 		@countries = topojson.feature(worldTopo, worldTopo.objects.countries)
@@ -139,48 +167,114 @@ class network.Map extends Widget
 			coord = if entry.geo then @projection([entry.geo.lon, entry.geo.lat]) else [0,0]
 			entry.qx = coord[0]
 			entry.qy = coord[1]
-			entry.x = coord[0]
-			entry.y = coord[1]
-			entry.radius = 6
+			entry.gx = entry.qx
+			entry.gy = entry.qy
+			entry.radius = 5
 			entry
+
+	collide: (alpha) ->
+		quadtree = d3.geom.quadtree(@entries)
+		return (d) ->
+			r = d.radius
+			nx1 = d.x - r
+			nx2 = d.x + r
+			ny1 = d.y - r
+			ny2 = d.y + r
+			d.x += (d.gx - d.x) * alpha * 0.1
+			d.y += (d.gy - d.y) * alpha * 0.1
+			quadtree.visit((quad, x1, y1, x2, y2) ->
+				if (quad.point && quad.point != d)
+					x = d.x - quad.point.x
+					y = d.y - quad.point.y
+					l = Math.sqrt(x * x + y * y)
+					r = d.radius + quad.point.radius
+					if l < r
+						l = (l - r) / l * alpha
+						d.x -= x *= l
+						d.y -= y *= l
+						quad.point.x += x
+						quad.point.y += y
+				return x1 > nx2 \
+					|| x2 < nx1 \
+					|| y1 > ny2 \
+					|| y2 < ny1
+			)
 
 	renderEntries: =>
 		that   = @
 		@force = d3.layout.force()
-					.nodes(@entries)
-					.gravity(0)
-					.charge((d) -> return -Math.pow(d.radius, 2.0) / 6)
-					.size([@width, @height])
-					.on("tick", (e) =>
-						k = e.alpha * 0.1
-						@entries.forEach (entry, i) =>
-							entry.x += (entry.qx - entry.x) * k
-							entry.y += (entry.qy - entry.y) * k
-						@circle
-							.attr('cx', (d)=>  return d.x)
-							.attr('cy', (d)=>  return d.y)
-					)
-					.start()
-
-		@circle = @groupPaths.selectAll(".entity")
-			.data(@entries)
-			.enter().append('circle')
-			.attr('class', (d) -> return d.type+" entity")
-			.attr('r', 6)
-			.attr('cx', (d)-> return d.qx)
-			.attr('cy', (d)-> return d.qy)
-			.call(@force.drag)
-			.on("mouseover", @showLegend)
-			.on("mouseout", -> d3.selectAll('.legend').remove())
-			.on("mousedown", (e,d ) ->
-				e.radius = if (Number(d3.select(this).attr('r')) == 6) then 30 else 6
-				e.opened = true
-				that.force.stop()
-				d3.select(this)
-					.transition().duration(250)
-					.attr('r', (d) -> return d.radius)
-				that.force.start()
+			.nodes(@entries)
+			.gravity(0)
+			.charge((d) -> return if d.radius == 6 then -6 else -2000)
+			.charge(0)
+			.size([that.width, that.height])
+			.on("tick", (e) ->
+				that.circles
+					.each(that.collide(e.alpha))
+					.attr('transform', (d)-> "translate("+d.x+", "+d.y+")")
 			)
+			.start()
+
+		@circles = @groupPaths.selectAll(".entity")
+			.data(@entries)
+			.enter().append('g')
+				.attr('class', (d) -> return d.type+" entity")
+				.call(@force.drag)
+				.on("mousedown", (e,d) ->
+					ui   = d3.select(this)
+					open = e.radius == 20
+					if open then that.closeCircle(e, ui) else that.openCircle(e, ui)
+					if e.members?
+						that.stickMembers(e)
+				)
+				.on("mouseover", @showLegend)
+				.on("mouseout", -> d3.selectAll('.legend').remove())
+
+		@circles.append('circle')
+			.attr('r', 3)
+
+	openCircle: (d, e) =>
+		d.radius = 20
+		if d.img?
+			e.append('image')
+				.attr("width", 40)
+				.attr("height", 40)
+				.attr("x", -20)
+				.attr("y", -20)
+				.style('opacity', 0)
+				.attr("xlink:href", (d) -> return "/static/"+d.img)
+				.transition().duration(250).style('opacity', 1)
+		e.select('circle')
+			.transition().duration(250)
+			.attr("r", (d) -> return d.radius)
+		@force.start()
+
+	closeCircle: (d, e) =>
+		d.radius = 3
+		e.selectAll('image').remove()
+		e.select('circle')
+			.transition().duration(250)
+			.attr("r", (d) -> return d.radius)
+		@force.start()
+
+	stickMembers: (entry) =>
+		if entry.sticky? and entry.sticky
+			for e in @circles.filter((e) -> return e.id in entry.members)[0]
+				e = d3.select(e)
+				data = e.datum()
+				@closeCircle(data, e)
+			@entries = @computeEntries(@entries)
+			entry.sticky = false
+			@force.links([])
+		else
+			entry.sticky = true
+			links = []
+			for e in @circles.filter((e) -> return e.id in entry.members)[0]
+				e = d3.select(e)
+				data = e.datum()
+				links.push({source:entry, target:data})
+				@force.links(links)
+				@openCircle(data, e)
 
 	showLegend: (d,i) =>
 		d3.selectAll('.legend').remove()
@@ -194,9 +288,9 @@ class network.Map extends Widget
 			.attr("class", "legend line")
 			.attr("x1", d.x+25)
 			.attr("y1", d.y + 25)
-			.attr("x2", d.x + 25 * 2)
+			.attr("x2", d.x + 25 + 15)
 			.attr("y2", d.y + 25)
-		@svg.append("svg:text")
+		@svg.append("text")
 			.attr("class", "legend text")
 			.text(d.description || d.title || d.name)
 			.attr("x", d.x + 25 * 2)
@@ -204,13 +298,23 @@ class network.Map extends Widget
 
 	renderCountries: =>
 		that = this
+		count = {
+			'FRA' : 5
+			'ESP' : 1
+			'DEU' : 2
+			'SWE' : 1
+			'USA' : 1
+			'CAN' : 2
+			'BGR' : 1
+			'NET' : 1
+		}
 		@groupPaths.selectAll(".country")
 			.data(@countries.features)
 			.enter()
 				.append("path")
 				.attr("d", @path)
 				.attr("class", "country")
-				.attr("fill", (d) -> return "#5C5D62")
+				.attr("fill", (d) -> return d3.rgb("#5C5D62").darker(count[d.id] * 0.6 | 0))
 
 		# Cities
 		# @groupPaths.append("path")

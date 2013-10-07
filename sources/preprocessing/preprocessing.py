@@ -11,7 +11,8 @@
 # Creation : 30-Jun-2012
 # Last mod : 28-Aug-2012
 # -----------------------------------------------------------------------------
-import os, sys, subprocess, shpaml, clevercss, shutil
+import os, sys, subprocess, shpaml, shutil
+from clevercss import clevercss
 
 def preprocess(app, request):
 	@app.before_request

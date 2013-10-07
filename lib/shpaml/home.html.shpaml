@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 	.Page.widget data-widget=network.Page
-		.Map.widget.primary data-widget=network.Map | {##}
-		.Panel.widget data-widget=network.Panel
+		.Map.widget.primary data-widget=network.Map
+			{#.Panel
+				h2.title | title
+				p.description | description#}
+		.Title
 			h1 | Datajournalism powered by Open Source Projects
 			p | My network after more one year working in datajournalism thanks to Open Source
 
