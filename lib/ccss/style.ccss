@@ -44,9 +44,9 @@ body:
 			stroke : white
 		&.text:
 			font-size:1em
-			fill : white
+			fill : #FFFFFF
 			font-size: 1.2em
-			text-shadow: -1px 0 #5C5D62, 0 1px #5C5D62, 1px 0 #5C5D62, 0 -1px #5C5D62
+			text-shadow: -1px 0 #2B2B2B, 0 1px #2B2B2B, 1px 0 #2B2B2B, 0 -1px #2B2B2B
 
 
 .Title:

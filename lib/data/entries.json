@@ -25,6 +25,7 @@
 		"type" : "person",
 		"name" : "Gregor Aisch",
 		"github" : "https://github.com/gka",
+		"img"   : "images/gka.png",
 		"geo" : {
 			"lon": 13.423653,
 			"lat": 52.473827
@@ -32,8 +33,29 @@
 	},
 	{
 		"type" : "person",
+		"name" : "Mirko Lorenz",
+		"twitter" : "https://twitter.com/mirkolorenz",
+		"img"   : "images/mirko.png",
+		"geo" : {
+			"lon": 6.960279,
+			"lat": 50.937531
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"img" : "images/jpp.png",
+		"link" : "",
+		"geo" : {
+			"lon": 6.960279,
+			"lat": 50.937531
+		}
+	},
+	{
+		"type" : "person",
 		"name" : "Sebastien Pierre",
 		"github" : "https://github.com/sebastien",
+		"img"   : "images/sebastien.png",
 		"geo" : {
 			"lon": -73.55443,
 			"lat": 45.51229
@@ -42,6 +64,8 @@
 	{
 		"type" : "company",
 		"name" : "FFunction",
+		"id"   : "ffctn",
+		"img"  : "images/ffctn.png",
 		"github" : "http://ffctn.com",
 		"geo" : {
 			"lon": -73.55443,
@@ -83,6 +107,7 @@
 		"type" : "person",
 		"name" : "Anne-Lise Bouyer",
 		"id"   : "annelise",
+		"img"   : "images/annelise.png",
 		"geo" :{
 			"lon": 13.423653,
 			"lat": 52.473827
@@ -106,6 +131,7 @@
 	{
 		"type" : "company",
 		"name" : "J++",
+		"img" : "images/jpp.png",
 		"link" : "",
 		"geo" : {
 			"lon": 18.062835,
@@ -115,6 +141,7 @@
 	{
 		"type" : "company",
 		"name" : "J++",
+		"img" : "images/jpp.png",
 		"link" : "",
 		"geo" : {
 			"lon": 2.406004,
@@ -125,6 +152,7 @@
 		{
 		"type" : "company",
 		"name" : "J++",
+		"img" : "images/jpp.png",
 		"link" : "",
 		"geo" : {
 			"lon": 4.893189,

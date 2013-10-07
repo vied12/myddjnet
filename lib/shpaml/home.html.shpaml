@@ -2,6 +2,10 @@
 {% block content %}
 	.Page.widget data-widget=network.Page
 		.Map.widget.primary data-widget=network.Map
+			.Controls.widget data-widget=network.Controls
+				.wrapper
+					a href="#jpp"
+						.control | J++
 			{#.Panel
 				h2.title | title
 				p.description | description#}

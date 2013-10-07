@@ -278,7 +278,7 @@ class network.Map extends Widget
 
 	showLegend: (d,i) =>
 		d3.selectAll('.legend').remove()
-		@svg.append("svg:line")
+		@svg.insert("svg:line")
 			.attr("class", "legend line")
 			.attr("x1", d.x)
 			.attr("y1", d.y)
