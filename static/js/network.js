@@ -339,7 +339,7 @@ network.Map = (function(_super) {
     var that;
     that = this;
     return this.circles.each(function(d) {
-      return that.openCircle(d, d3.select(this));
+      return that.openCircle(d, d3.select(this), true);
     });
   };
 

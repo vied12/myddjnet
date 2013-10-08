@@ -75,15 +75,16 @@ body {
 
 .Controls .control {
   text-align: right;
-  background-color: white;
+  background-color: #f5f5f5;
   padding: 0px 5px;
   margin-top: 5px;
   cursor: pointer;
-  transition: background-color, padding, margin .25s;
+  -webkit-transition: background-color .25s;
 }
 
 .Controls .control:hover {
-  background-color: #dedede;
+  background-color: #6d6d6d;
+  color: white;
 }
 
 .Title {
