@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.Map .graticule {
+  fill: none;
+  stroke: #777777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.Map .country {
+  -webkit-transition: fill 0.25s linear;
+  stroke: #8f9092;
+  stroke-width: 1px;
+  stroke-opacity: 0.4;
+}
+
+.Map .country:hover {
+  fill: #4c4747;
+}
+
+.Map .city {
+  font-size: 0.7em;
+}
+
+.Map .entity circle {
+  stroke-width: 2px;
+  stroke: #9f9f9f;
+}
+
+.Map .entity circle:hover {
+  fill: #616161;
+}
+
+.Map .entity.person circle {
+  stroke: #a8d8ff;
+}
+
+.Map .entity.company circle {
+  stroke: #f8bdbd;
+}
+
+.Map .dialog {
+  background-color: green;
+}
+
+.Map .legend {
+  color: white;
+}
+
+.Map .legend.line {
+  stroke: white;
+}
+
+.Map .legend.text {
+  font-size: 1em;
+  fill: #ffffff;
+  font-size: 1.2em;
+  text-shadow: -1px 0 #2b2b2b, 0 1px #2b2b2b, 1px 0 #2b2b2b, 0 -1px #2b2b2b;
+}
+
+.Title {
+  overflow: hidden;
+  min-height: 100px;
+}
+
+.primary.Map {
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.primary.Map svg {
+  border: 2px solid #444444;
+  background-color: #e7eaf7;
+}
+
+.primary.Map .Panel {
+  transition: opacity .25s;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)));
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  padding-left: 50px;
+}

@@ -1,0 +1,207 @@
+[
+	{
+		"type" : "person",
+		"id" : "pirhoo",
+		"name" : "Pierre Romera",
+		"github" : "https://github.com/Pirhoo",
+		"img"  : "images/pirhoo.png" ,
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
+		"id" : "toutenrab",
+		"name" : "Pierre Bellon",
+		"github" : "https://github.com/",
+		"img"  : "images/toutenrab.png" ,
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Gregor Aisch",
+		"github" : "https://github.com/gka",
+		"img"   : "images/gka.png",
+		"geo" : {
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Mirko Lorenz",
+		"twitter" : "https://twitter.com/mirkolorenz",
+		"img"   : "images/mirko.png",
+		"geo" : {
+			"lon": 6.960279,
+			"lat": 50.937531
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"img" : "images/jpp.png",
+		"link" : "",
+		"geo" : {
+			"lon": 6.960279,
+			"lat": 50.937531
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Sebastien Pierre",
+		"github" : "https://github.com/sebastien",
+		"img"   : "images/sebastien.png",
+		"geo" : {
+			"lon": -73.55443,
+			"lat": 45.51229
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "FFunction",
+		"id"   : "ffctn",
+		"img"  : "images/ffctn.png",
+		"github" : "http://ffctn.com",
+		"geo" : {
+			"lon": -73.55443,
+			"lat": 45.51229
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "We Do Data",
+		"github" : "",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Edouard Richard",
+		"img"  : "images/vied12.png",
+		"id"   : "vied12",
+		"github" : "https://github.com/gka",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Nicolas Kayer-Bril",
+		"id"   : "nkb",
+		"img"  : "images/nkb.png",
+		"github" : "https://github.com/gka",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Anne-Lise Bouyer",
+		"id"   : "annelise",
+		"img"   : "images/annelise.png",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "project",
+		"name" : "La Contre Histoire des Internets",
+		"link" : "lesinternets.arte.tv"
+	},
+
+	{
+		"type" : "company",
+		"name" : "Arte",
+		"link" : "arte.tv",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"img" : "images/jpp.png",
+		"link" : "",
+		"geo" : {
+			"lon": 18.062835,
+			"lat": 59.332261
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"img" : "images/jpp.png",
+		"link" : "",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		},
+		"members" : ["vied12", "pirhoo", "nkb", "toutenrab", "annelise"]
+	},
+		{
+		"type" : "company",
+		"name" : "J++",
+		"img" : "images/jpp.png",
+		"link" : "",
+		"geo" : {
+			"lon": 4.893189,
+			"lat": 52.3731
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "Wikileaks",
+		"link" : "",
+		"geo" : {
+			"lon": -0.127177,
+			"lat": 51.506301
+		}
+	},
+
+	{
+		"type" : "event",
+		"title" : "Hackathon NASA",
+		"location" : "la cantine, Paris",
+		"date" : "",
+		"link" : "",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+
+	{
+		"type" : "event",
+		"title" : "Evengelisation en Espagne",
+		"location" : "Madrid",
+		"date" : "",
+		"link" : "",
+		"geo" : {
+			"lon": -3.705802,
+			"lat": 40.420279
+		}
+	},
+
+	{
+		"type" : "event",
+		"title" : "Rencontre à Montain View à propos de spending stories",
+		"location" : "Google inc",
+		"date" : "",
+		"link" : "",
+		"geo" : {
+			"lon": -122.475586,
+			"lat": 37.791880
+		}
+	}
+]
