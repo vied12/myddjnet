@@ -4,6 +4,10 @@ body {
   text-align: center;
 }
 
+.Map {
+  position: relative;
+}
+
 .Map .graticule {
   fill: none;
   stroke: #777777;
@@ -60,6 +64,26 @@ body {
   fill: #ffffff;
   font-size: 1.2em;
   text-shadow: -1px 0 #2b2b2b, 0 1px #2b2b2b, 1px 0 #2b2b2b, 0 -1px #2b2b2b;
+}
+
+.Controls {
+  position: absolute;
+  top: 5px;
+  left: 2px;
+  font-size: 0.8em;
+}
+
+.Controls .control {
+  text-align: right;
+  background-color: white;
+  padding: 0px 5px;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: background-color, padding, margin .25s;
+}
+
+.Controls .control:hover {
+  background-color: #dedede;
 }
 
 .Title {

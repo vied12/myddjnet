@@ -46,8 +46,14 @@ network.Map = (function(_super) {
   __extends(Map, _super);
 
   function Map() {
+    this.closeAll = __bind(this.closeAll, this);
+    this.allclick = __bind(this.allclick, this);
+    this.companyclick = __bind(this.companyclick, this);
+    this.personclick = __bind(this.personclick, this);
+    this.jppclick = __bind(this.jppclick, this);
     this.renderCountries = __bind(this.renderCountries, this);
     this.showLegend = __bind(this.showLegend, this);
+    this.unStickMembers = __bind(this.unStickMembers, this);
     this.stickMembers = __bind(this.stickMembers, this);
     this.closeCircle = __bind(this.closeCircle, this);
     this.openCircle = __bind(this.openCircle, this);
@@ -61,6 +67,7 @@ network.Map = (function(_super) {
     this.UIS = {
       panel: '.Panel'
     };
+    this.ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick'];
     this.projection = void 0;
     this.groupPaths = void 0;
     this.path = void 0;
@@ -80,7 +87,7 @@ network.Map = (function(_super) {
     graticule = d3.geo.graticule();
     this.groupPaths.append("path").datum(graticule).attr("class", "graticule").attr("d", this.path);
     d3.select(window).on('resize', this.init_size);
-    return queue().defer(d3.json, "/static/data/world.json").defer(d3.json, "/static/data/entries.json").await(this.loadedDataCallback);
+    return queue().defer(d3.json, "static/data/world.json").defer(d3.json, "static/data/entries.json").await(this.loadedDataCallback);
   };
 
   Map.prototype.init_size = function() {
@@ -186,83 +193,88 @@ network.Map = (function(_super) {
     }).start();
     this.circles = this.groupPaths.selectAll(".entity").data(this.entries).enter().append('g').attr('class', function(d) {
       return d.type + " entity";
-    }).call(this.force.drag).on("mousedown", function(e, d) {
+    }).call(this.force.drag).on("mouseup", function(e, d) {
       var open, ui;
       ui = d3.select(this);
       open = e.radius === 20;
       if (open) {
-        that.closeCircle(e, ui);
+        return that.closeCircle(e, ui);
       } else {
-        that.openCircle(e, ui);
-      }
-      if (e.members != null) {
-        return that.stickMembers(e);
+        return that.openCircle(e, ui, true);
       }
     }).on("mouseover", this.showLegend).on("mouseout", function() {
       return d3.selectAll('.legend').remove();
     });
-    return this.circles.append('circle').attr('r', 3);
+    return this.circles.append('circle').attr('r', 5);
   };
 
-  Map.prototype.openCircle = function(d, e) {
+  Map.prototype.openCircle = function(d, e, stick) {
+    if (stick == null) {
+      stick = false;
+    }
     d.radius = 20;
     if (d.img != null) {
       e.append('image').attr("width", 40).attr("height", 40).attr("x", -20).attr("y", -20).style('opacity', 0).attr("xlink:href", function(d) {
-        return "/static/" + d.img;
+        return "static/" + d.img;
       }).transition().duration(250).style('opacity', 1);
     }
     e.select('circle').transition().duration(250).attr("r", function(d) {
       return d.radius;
     });
+    if ((d.members != null) && stick) {
+      this.stickMembers(d);
+    }
     return this.force.start();
   };
 
   Map.prototype.closeCircle = function(d, e) {
-    d.radius = 3;
+    d.radius = 5;
     e.selectAll('image').remove();
     e.select('circle').transition().duration(250).attr("r", function(d) {
       return d.radius;
     });
+    if (d.members != null) {
+      this.unStickMembers(d);
+    }
     return this.force.start();
   };
 
   Map.prototype.stickMembers = function(entry) {
-    var data, e, links, _i, _j, _len, _len1, _ref, _ref1, _results;
-    if ((entry.sticky != null) && entry.sticky) {
-      _ref = this.circles.filter(function(e) {
-        var _ref;
-        return _ref = e.id, __indexOf.call(entry.members, _ref) >= 0;
-      })[0];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        e = _ref[_i];
-        e = d3.select(e);
-        data = e.datum();
-        this.closeCircle(data, e);
-      }
-      this.entries = this.computeEntries(this.entries);
-      entry.sticky = false;
-      return this.force.links([]);
-    } else {
-      entry.sticky = true;
-      links = [];
-      _ref1 = this.circles.filter(function(e) {
-        var _ref1;
-        return _ref1 = e.id, __indexOf.call(entry.members, _ref1) >= 0;
-      })[0];
-      _results = [];
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        e = _ref1[_j];
-        e = d3.select(e);
-        data = e.datum();
-        links.push({
-          source: entry,
-          target: data
-        });
-        this.force.links(links);
-        _results.push(this.openCircle(data, e));
-      }
-      return _results;
+    var data, e, links, _i, _len, _ref, _results;
+    links = [];
+    _ref = this.circles.filter(function(e) {
+      var _ref;
+      return _ref = e.id, __indexOf.call(entry.members, _ref) >= 0;
+    })[0];
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      e = _ref[_i];
+      e = d3.select(e);
+      data = e.datum();
+      links.push({
+        source: entry,
+        target: data
+      });
+      this.force.links(links);
+      _results.push(this.openCircle(data, e));
     }
+    return _results;
+  };
+
+  Map.prototype.unStickMembers = function(entry) {
+    var data, e, _i, _len, _ref;
+    _ref = this.circles.filter(function(e) {
+      var _ref;
+      return _ref = e.id, __indexOf.call(entry.members, _ref) >= 0;
+    })[0];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      e = _ref[_i];
+      e = d3.select(e);
+      data = e.datum();
+      this.closeCircle(data, e);
+    }
+    this.entries = this.computeEntries(this.entries);
+    return this.force.links([]);
   };
 
   Map.prototype.showLegend = function(d, i) {
@@ -287,6 +299,55 @@ network.Map = (function(_super) {
     };
     return this.groupPaths.selectAll(".country").data(this.countries.features).enter().append("path").attr("d", this.path).attr("class", "country").attr("fill", function(d) {
       return d3.rgb("#5C5D62").darker(count[d.id] * 0.6 | 0);
+    });
+  };
+
+  Map.prototype.jppclick = function() {
+    var that;
+    that = this;
+    this.closeAll();
+    return this.circles.filter(function(d) {
+      return d.name === "J++";
+    }).each(function(d) {
+      return that.openCircle(d, d3.select(this));
+    });
+  };
+
+  Map.prototype.personclick = function() {
+    var that;
+    that = this;
+    this.closeAll();
+    return this.circles.filter(function(d) {
+      return d.type === "person";
+    }).each(function(d) {
+      return that.openCircle(d, d3.select(this));
+    });
+  };
+
+  Map.prototype.companyclick = function() {
+    var that;
+    that = this;
+    this.closeAll();
+    return this.circles.filter(function(d) {
+      return d.type === "company";
+    }).each(function(d) {
+      return that.openCircle(d, d3.select(this));
+    });
+  };
+
+  Map.prototype.allclick = function() {
+    var that;
+    that = this;
+    return this.circles.each(function(d) {
+      return that.openCircle(d, d3.select(this));
+    });
+  };
+
+  Map.prototype.closeAll = function() {
+    var that;
+    that = this;
+    return this.circles.each(function(d) {
+      return that.closeCircle(d, d3.select(this));
     });
   };
 
