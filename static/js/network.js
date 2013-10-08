@@ -80,7 +80,7 @@ network.Map = (function(_super) {
     graticule = d3.geo.graticule();
     this.groupPaths.append("path").datum(graticule).attr("class", "graticule").attr("d", this.path);
     d3.select(window).on('resize', this.init_size);
-    return queue().defer(d3.json, "/static/data/world.json").defer(d3.json, "/static/data/entries.json").await(this.loadedDataCallback);
+    return queue().defer(d3.json, "static/data/world.json").defer(d3.json, "static/data/entries.json").await(this.loadedDataCallback);
   };
 
   Map.prototype.init_size = function() {
@@ -208,7 +208,7 @@ network.Map = (function(_super) {
     d.radius = 20;
     if (d.img != null) {
       e.append('image').attr("width", 40).attr("height", 40).attr("x", -20).attr("y", -20).style('opacity', 0).attr("xlink:href", function(d) {
-        return "/static/" + d.img;
+        return "static/" + d.img;
       }).transition().duration(250).style('opacity', 1);
     }
     e.select('circle').transition().duration(250).attr("r", function(d) {
