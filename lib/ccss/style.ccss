@@ -4,6 +4,7 @@ body:
 	text-align:center
 
 .Map:
+	position:relative
 	.graticule:
 		fill             : none
 		stroke           : #777
@@ -48,6 +49,21 @@ body:
 			font-size: 1.2em
 			text-shadow: -1px 0 #2B2B2B, 0 1px #2B2B2B, 1px 0 #2B2B2B, 0 -1px #2B2B2B
 
+.Controls:
+	position: absolute
+	top: 5px
+	left: 2px
+	font-size: 0.8em
+	.control:
+		text-align:right
+		background-color: #F5F5F5
+		padding: 0px 5px
+		margin-top: 5px
+		cursor: pointer
+		-webkit-transition: "background-color .25s"
+		&:hover:
+			background-color:#6D6D6D
+			color:white
 
 .Title:
 	overflow:hidden

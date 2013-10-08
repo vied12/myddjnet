@@ -14,6 +14,8 @@
 import os, sys, subprocess, shpaml, shutil
 from clevercss import clevercss
 
+LIB_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
+
 def preprocess(app, request):
 	@app.before_request
 	def render():

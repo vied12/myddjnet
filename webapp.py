@@ -48,10 +48,15 @@ def index():
 if __name__ == '__main__':
 	import preprocessing.preprocessing as preprocessing
 	import sys
-	if len(sys.argv) > 1 and sys.argv[1] == "collectstatic":
-		preprocessing._collect_static(app)
-		# if app.config['USE_S3']:
-			# flask_s3.create_all(app)
+	if len(sys.argv) > 1:
+		if sys.argv[1] == "collectstatic":
+			preprocessing._collect_static(app)
+		if sys.argv[1] == "build":
+			from flask_frozen import Freezer
+			preprocessing._collect_static(app)
+			freezer = Freezer(app)
+			freezer.freeze()
+		exit()
 	else:
 		# render ccss, coffeescript and shpaml in 'templates' and 'static' dirs
 		preprocessing.preprocess(app, request) 

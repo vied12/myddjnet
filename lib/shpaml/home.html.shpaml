@@ -4,8 +4,11 @@
 		.Map.widget.primary data-widget=network.Map
 			.Controls.widget data-widget=network.Controls
 				.wrapper
-					a href="#jpp"
-						.control | J++
+					.control.do data-action=personclick | Persons
+					.control.do data-action=jppclick | J++
+					.control.do data-action=companyclick | Companies
+					.control.do data-action=allclick | All
+					.control.do data-action=closeAll | Close All
 			{#.Panel
 				h2.title | title
 				p.description | description#}

@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Project : Network
 # -----------------------------------------------------------------------------
-# Author : Edouard Richard                                  <edou4rd@gmail.com>
+# Author : Edouard Richard                                  <edou4rdthat.gmail.com>
 # -----------------------------------------------------------------------------
 # License : MIT licence
 # -----------------------------------------------------------------------------
@@ -69,6 +69,8 @@ class network.Map extends Widget
 			panel : '.Panel'
 		}
 
+		@ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick']
+
 		@projection = undefined
 		@groupPaths = undefined
 		@path       = undefined
@@ -105,8 +107,8 @@ class network.Map extends Widget
 		# binds events
 		d3.select(window).on('resize', @init_size)
 		queue()
-			.defer(d3.json, "/static/data/world.json")
-			.defer(d3.json, "/static/data/entries.json")
+			.defer(d3.json, "static/data/world.json")
+			.defer(d3.json, "static/data/entries.json")
 			.await(@loadedDataCallback)
 		# init panel
 		# @ui.append($("<div id='Panel' class='widget' data-widget='network.Panel'></div>"))
@@ -220,20 +222,18 @@ class network.Map extends Widget
 			.enter().append('g')
 				.attr('class', (d) -> return d.type+" entity")
 				.call(@force.drag)
-				.on("mousedown", (e,d) ->
+				.on("mouseup", (e,d) ->
 					ui   = d3.select(this)
 					open = e.radius == 20
-					if open then that.closeCircle(e, ui) else that.openCircle(e, ui)
-					if e.members?
-						that.stickMembers(e)
+					if open then that.closeCircle(e, ui) else that.openCircle(e, ui, true)
 				)
 				.on("mouseover", @showLegend)
 				.on("mouseout", -> d3.selectAll('.legend').remove())
 
 		@circles.append('circle')
-			.attr('r', 3)
+			.attr('r', 5)
 
-	openCircle: (d, e) =>
+	openCircle: (d, e, stick=false) =>
 		d.radius = 20
 		if d.img?
 			e.append('image')
@@ -242,39 +242,41 @@ class network.Map extends Widget
 				.attr("x", -20)
 				.attr("y", -20)
 				.style('opacity', 0)
-				.attr("xlink:href", (d) -> return "/static/"+d.img)
+				.attr("xlink:href", (d) -> return "static/"+d.img)
 				.transition().duration(250).style('opacity', 1)
 		e.select('circle')
 			.transition().duration(250)
 			.attr("r", (d) -> return d.radius)
+		if d.members? and stick
+			@stickMembers(d)
 		@force.start()
 
 	closeCircle: (d, e) =>
-		d.radius = 3
+		d.radius = 5
 		e.selectAll('image').remove()
 		e.select('circle')
 			.transition().duration(250)
 			.attr("r", (d) -> return d.radius)
+		if d.members?
+			@unStickMembers(d)
 		@force.start()
 
 	stickMembers: (entry) =>
-		if entry.sticky? and entry.sticky
-			for e in @circles.filter((e) -> return e.id in entry.members)[0]
-				e = d3.select(e)
-				data = e.datum()
-				@closeCircle(data, e)
-			@entries = @computeEntries(@entries)
-			entry.sticky = false
-			@force.links([])
-		else
-			entry.sticky = true
-			links = []
-			for e in @circles.filter((e) -> return e.id in entry.members)[0]
-				e = d3.select(e)
-				data = e.datum()
-				links.push({source:entry, target:data})
-				@force.links(links)
-				@openCircle(data, e)
+		links = []
+		for e in @circles.filter((e) -> return e.id in entry.members)[0]
+			e = d3.select(e)
+			data = e.datum()
+			links.push({source:entry, target:data})
+			@force.links(links)
+			@openCircle(data, e)
+
+	unStickMembers: (entry) =>
+		for e in @circles.filter((e) -> return e.id in entry.members)[0]
+			e = d3.select(e)
+			data = e.datum()
+			@closeCircle(data, e)
+		@entries = @computeEntries(@entries)
+		@force.links([])
 
 	showLegend: (d,i) =>
 		d3.selectAll('.legend').remove()
@@ -332,6 +334,35 @@ class network.Map extends Widget
 		# 		.attr("transform", (d) -> return "translate(" + that.projection(d.geometry.coordinates) + ")")
 		# 		.attr("x", (d) -> return if d.geometry.coordinates[0] > -1 then 6 else -6)
 		# 		.style("text-anchor", (d) -> return if d.geometry.coordinates[0] > -1 then "start" else "end")
+
+	jppclick: =>
+		that = @
+		@closeAll()
+		@circles.filter((d) -> d.name=="J++").each((d) ->
+			that.openCircle(d, d3.select(this))
+		)
+
+	personclick: =>
+		that = @
+		@closeAll()
+		@circles.filter((d) -> d.type=="person").each((d) ->
+			that.openCircle(d, d3.select(this))
+		)
+
+	companyclick: =>
+		that = @
+		@closeAll()
+		@circles.filter((d) -> d.type=="company").each((d) ->
+			that.openCircle(d, d3.select(this))
+		)
+
+	allclick: =>
+		that = @
+		@circles.each((d) -> that.openCircle(d, d3.select(this), true))
+
+	closeAll: =>
+		that = @
+		@circles.each((d) -> that.closeCircle(d, d3.select(this)))
 
 start = ->
 	$(window).load ()->
