@@ -44,7 +44,11 @@ body {
 }
 
 .Map .entity.company circle {
-  stroke: #f8bdbd;
+  stroke: #ff7979;
+}
+
+.Map .entity.event circle {
+  stroke: #c9c100;
 }
 
 .Map .dialog {

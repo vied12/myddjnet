@@ -34,6 +34,7 @@
 	{
 		"type" : "person",
 		"name" : "Mirko Lorenz",
+		"id"   : "mirko",
 		"twitter" : "https://twitter.com/mirkolorenz",
 		"img"   : "images/mirko.png",
 		"geo" : {
@@ -49,14 +50,16 @@
 		"geo" : {
 			"lon": 6.960279,
 			"lat": 50.937531
-		}
+		},
+		"members" : ["mirko"]
 	},
 	{
-		"type" : "person",
-		"name" : "Sebastien Pierre",
+		"type"   : "person",
+		"name"   : "Sebastien Pierre",
 		"github" : "https://github.com/sebastien",
-		"img"   : "images/sebastien.png",
-		"geo" : {
+		"img"    : "images/sebastien.png",
+		"id"     : "sebastien",
+		"geo"    : {
 			"lon": -73.55443,
 			"lat": 45.51229
 		}
@@ -70,7 +73,8 @@
 		"geo" : {
 			"lon": -73.55443,
 			"lat": 45.51229
-		}
+		},
+		"members" : ["vied12", "sebastien"]
 	},
 	{
 		"type" : "company",
@@ -113,12 +117,6 @@
 			"lat": 52.473827
 		}
 	},
-	{
-		"type" : "project",
-		"name" : "La Contre Histoire des Internets",
-		"link" : "lesinternets.arte.tv"
-	},
-
 	{
 		"type" : "company",
 		"name" : "Arte",
@@ -178,7 +176,8 @@
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
-		}
+		},
+		"members" : ["vied12", "toutenrab"]
 	},
 
 	{
@@ -190,7 +189,8 @@
 		"geo" : {
 			"lon": -3.705802,
 			"lat": 40.420279
-		}
+		},
+		"members" : ["vied12", "pirhoo", "nkb", "annelise"]
 	},
 
 	{
@@ -202,6 +202,7 @@
 		"geo" : {
 			"lon": -122.475586,
 			"lat": 37.791880
-		}
+		},
+		"members" : ["annelise"]
 	}
 ]

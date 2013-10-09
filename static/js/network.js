@@ -58,11 +58,14 @@ network.Map = (function(_super) {
     this.closeCircle = __bind(this.closeCircle, this);
     this.openCircle = __bind(this.openCircle, this);
     this.renderEntries = __bind(this.renderEntries, this);
+    this.computeEntries = __bind(this.computeEntries, this);
     this.loadedDataCallback = __bind(this.loadedDataCallback, this);
     this.init_size = __bind(this.init_size, this);
     this.bindUI = __bind(this.bindUI, this);
     this.OPTIONS = {
-      map_ratio: .5
+      map_ratio: .5,
+      litle_radius: 4,
+      big_radius: 20
     };
     this.UIS = {
       panel: '.Panel'
@@ -139,7 +142,7 @@ network.Map = (function(_super) {
       entry.qy = coord[1];
       entry.gx = entry.qx;
       entry.gy = entry.qy;
-      entry.radius = 5;
+      entry.radius = this.OPTIONS.litle_radius;
       _results.push(entry);
     }
     return _results;
@@ -180,13 +183,7 @@ network.Map = (function(_super) {
   Map.prototype.renderEntries = function() {
     var that;
     that = this;
-    this.force = d3.layout.force().nodes(this.entries).gravity(0).charge(function(d) {
-      if (d.radius === 6) {
-        return -6;
-      } else {
-        return -2000;
-      }
-    }).charge(0).size([that.width, that.height]).on("tick", function(e) {
+    this.force = d3.layout.force().nodes(this.entries).gravity(0).charge(0).size([that.width, that.height]).on("tick", function(e) {
       return that.circles.each(that.collide(e.alpha)).attr('transform', function(d) {
         return "translate(" + d.x + ", " + d.y + ")";
       });
@@ -196,7 +193,7 @@ network.Map = (function(_super) {
     }).call(this.force.drag).on("mouseup", function(e, d) {
       var open, ui;
       ui = d3.select(this);
-      open = e.radius === 20;
+      open = e.radius === that.OPTIONS.big_radius;
       if (open) {
         return that.closeCircle(e, ui);
       } else {
@@ -205,16 +202,18 @@ network.Map = (function(_super) {
     }).on("mouseover", this.showLegend).on("mouseout", function() {
       return d3.selectAll('.legend').remove();
     });
-    return this.circles.append('circle').attr('r', 5);
+    return this.circles.append('circle').attr('r', function(d) {
+      return d.radius;
+    });
   };
 
   Map.prototype.openCircle = function(d, e, stick) {
     if (stick == null) {
       stick = false;
     }
-    d.radius = 20;
+    d.radius = this.OPTIONS.big_radius;
     if (d.img != null) {
-      e.append('image').attr("width", 40).attr("height", 40).attr("x", -20).attr("y", -20).style('opacity', 0).attr("xlink:href", function(d) {
+      e.append('image').attr("width", d.radius * 2).attr("height", d.radius * 2).attr("x", 0 - d.radius).attr("y", 0 - d.radius).style('opacity', 0).attr("xlink:href", function(d) {
         return "static/" + d.img;
       }).transition().duration(250).style('opacity', 1);
     }
@@ -228,7 +227,7 @@ network.Map = (function(_super) {
   };
 
   Map.prototype.closeCircle = function(d, e) {
-    d.radius = 5;
+    d.radius = this.OPTIONS.litle_radius;
     e.selectAll('image').remove();
     e.select('circle').transition().duration(250).attr("r", function(d) {
       return d.radius;
@@ -240,8 +239,7 @@ network.Map = (function(_super) {
   };
 
   Map.prototype.stickMembers = function(entry) {
-    var data, e, links, _i, _len, _ref, _results;
-    links = [];
+    var data, e, _i, _len, _ref, _results;
     _ref = this.circles.filter(function(e) {
       var _ref;
       return _ref = e.id, __indexOf.call(entry.members, _ref) >= 0;
@@ -251,30 +249,28 @@ network.Map = (function(_super) {
       e = _ref[_i];
       e = d3.select(e);
       data = e.datum();
-      links.push({
-        source: entry,
-        target: data
-      });
-      this.force.links(links);
+      data.gx = entry.gx;
+      data.gy = entry.gy;
       _results.push(this.openCircle(data, e));
     }
     return _results;
   };
 
   Map.prototype.unStickMembers = function(entry) {
-    var data, e, _i, _len, _ref;
+    var data, e, _i, _len, _ref, _results;
+    this.entries = this.computeEntries(this.entries);
     _ref = this.circles.filter(function(e) {
       var _ref;
       return _ref = e.id, __indexOf.call(entry.members, _ref) >= 0;
     })[0];
+    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       e = _ref[_i];
       e = d3.select(e);
       data = e.datum();
-      this.closeCircle(data, e);
+      _results.push(this.closeCircle(data, e));
     }
-    this.entries = this.computeEntries(this.entries);
-    return this.force.links([]);
+    return _results;
   };
 
   Map.prototype.showLegend = function(d, i) {
@@ -339,7 +335,7 @@ network.Map = (function(_super) {
     var that;
     that = this;
     return this.circles.each(function(d) {
-      return that.openCircle(d, d3.select(this), true);
+      return that.openCircle(d, d3.select(this));
     });
   };
 
