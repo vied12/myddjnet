@@ -52,6 +52,7 @@ network.Map = (function(_super) {
     this.personclick = __bind(this.personclick, this);
     this.jppclick = __bind(this.jppclick, this);
     this.renderCountries = __bind(this.renderCountries, this);
+    this.hideLegend = __bind(this.hideLegend, this);
     this.showLegend = __bind(this.showLegend, this);
     this.unStickMembers = __bind(this.unStickMembers, this);
     this.stickMembers = __bind(this.stickMembers, this);
@@ -77,6 +78,7 @@ network.Map = (function(_super) {
     this.force = void 0;
     this.width = void 0;
     this.height = void 0;
+    this.hideLegendTimer = void 0;
   }
 
   Map.prototype.bindUI = function(ui) {
@@ -121,8 +123,14 @@ network.Map = (function(_super) {
       this.entries = this.computeEntries(this.entries);
     }
     if (this.force != null) {
-      return this.force.stop().start();
+      this.force.stop().start();
     }
+    height = this.height * 0.3;
+    return this.uis.panel.css({
+      height: height,
+      width: this.width + 4,
+      top: -height - 3
+    });
   };
 
   Map.prototype.loadedDataCallback = function(error, worldTopo, entries) {
@@ -181,7 +189,8 @@ network.Map = (function(_super) {
   };
 
   Map.prototype.renderEntries = function() {
-    var that;
+    var that,
+      _this = this;
     that = this;
     this.force = d3.layout.force().nodes(this.entries).gravity(0).charge(0).size([that.width, that.height]).on("tick", function(e) {
       return that.circles.each(that.collide(e.alpha)).attr('transform', function(d) {
@@ -195,13 +204,20 @@ network.Map = (function(_super) {
       ui = d3.select(this);
       open = e.radius === that.OPTIONS.big_radius;
       if (open) {
-        return that.closeCircle(e, ui);
+        that.closeCircle(e, ui);
+        if (that._previousOver === e) {
+          return that.hideLegend(true)(e);
+        }
       } else {
-        return that.openCircle(e, ui, true);
+        that.openCircle(e, ui, true);
+        return that.showLegend(true)(e);
       }
-    }).on("mouseover", this.showLegend).on("mouseout", function() {
-      return d3.selectAll('.legend').remove();
-    });
+    }).on("mouseover", function(d) {
+      if (_this._previousOver !== d) {
+        _this.showLegend()(d);
+        return _this._previousOver = d;
+      }
+    }).on("mouseout", this.hideLegend());
     return this.circles.append('circle').attr('r', function(d) {
       return d.radius;
     });
@@ -273,11 +289,47 @@ network.Map = (function(_super) {
     return _results;
   };
 
-  Map.prototype.showLegend = function(d, i) {
-    d3.selectAll('.legend').remove();
-    this.svg.insert("svg:line").attr("class", "legend line").attr("x1", d.x).attr("y1", d.y).attr("x2", d.x + 25).attr("y2", d.y + 25);
-    this.svg.append("svg:line").attr("class", "legend line").attr("x1", d.x + 25).attr("y1", d.y + 25).attr("x2", d.x + 25 + 15).attr("y2", d.y + 25);
-    return this.svg.append("text").attr("class", "legend text").text(d.description || d.title || d.name).attr("x", d.x + 25 * 2).attr("y", d.y + 25);
+  Map.prototype.showLegend = function(blocked) {
+    var _this = this;
+    if (blocked == null) {
+      blocked = false;
+    }
+    return (function(d, i) {
+      _this.legendBlocked = blocked;
+      clearTimeout(_this.hideLegendTimer);
+      if (d.y > _this.height - _this.uis.panel.height()) {
+        _this.uis.panel.addClass('top');
+        _this.uis.panel.css('top', -_this.height - 7);
+      } else {
+        _this.uis.panel.removeClass('top');
+        _this.uis.panel.css('top', -_this.uis.panel.height() - 3);
+      }
+      _this.uis.panel.css('display', 'block');
+      return setTimeout(function() {
+        _this.uis.panel.removeClass("hidden").find('.title').html(d.description || d.title || d.name);
+        return _this.uis.panel.find('.description').html(d.description || d.title || d.name);
+      }, 100);
+    });
+  };
+
+  Map.prototype.hideLegend = function(force_blocked) {
+    var _this = this;
+    if (force_blocked == null) {
+      force_blocked = false;
+    }
+    this.legendBlocked = force_blocked ? false : this.legendBlocked;
+    return (function(d, i) {
+      if (!_this.legendBlocked) {
+        _this._previousOver = void 0;
+        clearTimeout(_this.hideLegendTimer);
+        return _this.hideLegendTimer = setTimeout(function() {
+          _this.uis.panel.addClass("hidden");
+          return setTimeout(function() {
+            return _this.uis.panel.css('display', 'none');
+          }, 750);
+        }, 500);
+      }
+    });
   };
 
   Map.prototype.renderCountries = function() {
