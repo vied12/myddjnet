@@ -33,7 +33,9 @@ body:
 		&.person circle:
 			stroke: #A8D8FF
 		&.company circle:
-			stroke: #F8BDBD
+			stroke: #FF7979
+		&.event circle:
+			stroke: #C9C100
 
 	.dialog:
 		background-color : green
@@ -77,8 +79,17 @@ body:
 		background-color: #E7EAF7
 	.Panel:
 		transition : opacity .25s
+		opacity: 1
 		background: "-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)))"
 		position: relative
 		overflow : hidden
-		text-align: left
-		padding-left : 50px
+		text-align: right
+		.wrapper:
+			padding-right : 20px
+		&.hidden:
+			display: none
+			opacity: 0
+		&.top:
+			background: "-webkit-gradient(linear, left bottom, left top, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)))"
+		.title:
+			text-shadow: 3px 0 #EBEBEB, 0 1px #EBEBEB, 1px 0 #EBEBEB, 0 -1px #EBEBEB

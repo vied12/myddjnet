@@ -39,9 +39,9 @@ class network.Page extends Widget
 		@uis.map.height(window_height - @uis.title.outerHeight(true) - 20)
 
 # -----------------------------------------------------------------------------
-#
+
 #    Panel
-#
+
 # -----------------------------------------------------------------------------
 # class network.Panel extends Widget
 
@@ -63,7 +63,9 @@ class network.Map extends Widget
 
 	constructor: ->
 		@OPTIONS =
-			map_ratio : .5
+			map_ratio    : .5
+			litle_radius : 4
+			big_radius   : 20
 
 		@UIS = {
 			panel : '.Panel'
@@ -77,6 +79,7 @@ class network.Map extends Widget
 		@force      = undefined
 		@width      = undefined
 		@height     = undefined
+		@hideLegendTimer = undefined
 		# @panel      = undefined
 
 	bindUI: (ui) =>
@@ -147,13 +150,13 @@ class network.Map extends Widget
 		if @force?
 			@force.stop().start()
 		# panel
-		# height = @height *0.3
-		# @uis.panel.css(
-		# 	height : height
-		# 	width  : @width + 4
-		# 	top    : 0
-		# 	# "margin-left" : @ui.find('svg').offset().left
-		# )
+		height = @height *0.3
+		@uis.panel.css(
+			height : height
+			width  : @width + 4
+			top    : -height - 3
+			# "margin-left" : @ui.find('svg').offset().left
+		)
 
 	loadedDataCallback: (error, worldTopo, entries) =>
 		@countries = topojson.feature(worldTopo, worldTopo.objects.countries)
@@ -164,14 +167,14 @@ class network.Map extends Widget
 		@renderCountries()
 		@renderEntries()
 
-	computeEntries: (entries) ->
+	computeEntries: (entries) =>
 		for entry in entries
 			coord = if entry.geo then @projection([entry.geo.lon, entry.geo.lat]) else [0,0]
 			entry.qx = coord[0]
 			entry.qy = coord[1]
 			entry.gx = entry.qx
 			entry.gy = entry.qy
-			entry.radius = 5
+			entry.radius = @OPTIONS.litle_radius
 			entry
 
 	collide: (alpha) ->
@@ -207,7 +210,7 @@ class network.Map extends Widget
 		@force = d3.layout.force()
 			.nodes(@entries)
 			.gravity(0)
-			.charge((d) -> return if d.radius == 6 then -6 else -2000)
+			# .charge((d) -> return if d.type == "company" then -6 else -2000)
 			.charge(0)
 			.size([that.width, that.height])
 			.on("tick", (e) ->
@@ -224,23 +227,31 @@ class network.Map extends Widget
 				.call(@force.drag)
 				.on("mouseup", (e,d) ->
 					ui   = d3.select(this)
-					open = e.radius == 20
-					if open then that.closeCircle(e, ui) else that.openCircle(e, ui, true)
+					open = e.radius == that.OPTIONS.big_radius
+					if open
+						that.closeCircle(e, ui)
+						if that._previousOver == e
+							that.hideLegend(true)(e)
+					else 
+						that.openCircle(e, ui, true)
+						that.showLegend(true)(e)
 				)
-				.on("mouseover", @showLegend)
-				.on("mouseout", -> d3.selectAll('.legend').remove())
+				# .on("mouseover", (d)-> d3.select(this).select('circle').attr('r', d.radius - 2))
+				# .on("mouseout", (d)-> d3.select(this).select('circle').attr('r', d.radius))
+				.on("mouseover", (d) => if @_previousOver != d then @showLegend()(d); @_previousOver = d)
+				.on("mouseout", @hideLegend())
 
 		@circles.append('circle')
-			.attr('r', 5)
+			.attr('r', (d) -> return d.radius)
 
 	openCircle: (d, e, stick=false) =>
-		d.radius = 20
+		d.radius = @OPTIONS.big_radius
 		if d.img?
 			e.append('image')
-				.attr("width", 40)
-				.attr("height", 40)
-				.attr("x", -20)
-				.attr("y", -20)
+				.attr("width", d.radius * 2)
+				.attr("height", d.radius * 2)
+				.attr("x", 0 - d.radius)
+				.attr("y", 0 - d.radius)
 				.style('opacity', 0)
 				.attr("xlink:href", (d) -> return "static/"+d.img)
 				.transition().duration(250).style('opacity', 1)
@@ -252,7 +263,7 @@ class network.Map extends Widget
 		@force.start()
 
 	closeCircle: (d, e) =>
-		d.radius = 5
+		d.radius = @OPTIONS.litle_radius
 		e.selectAll('image').remove()
 		e.select('circle')
 			.transition().duration(250)
@@ -262,41 +273,56 @@ class network.Map extends Widget
 		@force.start()
 
 	stickMembers: (entry) =>
-		links = []
+		# links = []
 		for e in @circles.filter((e) -> return e.id in entry.members)[0]
 			e = d3.select(e)
 			data = e.datum()
-			links.push({source:entry, target:data})
-			@force.links(links)
+			data.gx = entry.gx
+			data.gy = entry.gy
+			# links.push({source:entry, target:data})
+			# @force.links(links)
 			@openCircle(data, e)
 
 	unStickMembers: (entry) =>
+		@entries = @computeEntries(@entries)
 		for e in @circles.filter((e) -> return e.id in entry.members)[0]
 			e = d3.select(e)
 			data = e.datum()
 			@closeCircle(data, e)
-		@entries = @computeEntries(@entries)
-		@force.links([])
+		# @force.links([])
 
-	showLegend: (d,i) =>
-		d3.selectAll('.legend').remove()
-		@svg.insert("svg:line")
-			.attr("class", "legend line")
-			.attr("x1", d.x)
-			.attr("y1", d.y)
-			.attr("x2", d.x + 25)
-			.attr("y2", d.y + 25)
-		@svg.append("svg:line")
-			.attr("class", "legend line")
-			.attr("x1", d.x+25)
-			.attr("y1", d.y + 25)
-			.attr("x2", d.x + 25 + 15)
-			.attr("y2", d.y + 25)
-		@svg.append("text")
-			.attr("class", "legend text")
-			.text(d.description || d.title || d.name)
-			.attr("x", d.x + 25 * 2)
-			.attr("y", d.y + 25)
+	showLegend: (blocked=false) =>
+		return ((d,i) =>
+			@legendBlocked = blocked
+			clearTimeout(@hideLegendTimer)
+			if d.y > @height - @uis.panel.height()
+				@uis.panel.addClass('top')
+				@uis.panel.css('top', -@height - 7)
+			else
+				@uis.panel.removeClass('top')
+				@uis.panel.css('top', -@uis.panel.height() - 3)
+
+			@uis.panel.css('display','block')
+			setTimeout(=>
+				@uis.panel.removeClass("hidden").find('.title').html(d.description || d.title || d.name)
+				@uis.panel.find('.description').html(d.description || d.title || d.name)
+			, 10)
+		)
+
+	hideLegend:(force_blocked=false) =>
+		@legendBlocked = if force_blocked then false else @legendBlocked
+		return ((d,i) =>
+			if not @legendBlocked 
+				@_previousOver = undefined
+				clearTimeout(@hideLegendTimer)
+				@hideLegendTimer = setTimeout(=>
+					@uis.panel.addClass("hidden")
+					setTimeout(=>
+						@uis.panel.css('display','none')
+					, 250)
+				,100)
+		)
+		
 
 	renderCountries: =>
 		that = this
@@ -358,7 +384,7 @@ class network.Map extends Widget
 
 	allclick: =>
 		that = @
-		@circles.each((d) -> that.openCircle(d, d3.select(this), true))
+		@circles.each((d) -> that.openCircle(d, d3.select(this)))
 
 	closeAll: =>
 		that = @

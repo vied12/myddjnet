@@ -9,9 +9,10 @@
 					.control.do data-action=companyclick | Companies
 					.control.do data-action=allclick | All
 					.control.do data-action=closeAll | Close All
-			{#.Panel
-				h2.title | title
-				p.description | description#}
+			.Panel.hidden
+				.wrapper
+					h2.title | {#title#}
+					p.description | {#description#}
 		.Title
 			h1 | Datajournalism powered by Open Source Projects
 			p | My network after more one year working in datajournalism thanks to Open Source
