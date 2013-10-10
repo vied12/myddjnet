@@ -306,8 +306,8 @@ network.Map = (function(_super) {
       }
       _this.uis.panel.css('display', 'block');
       return setTimeout(function() {
-        _this.uis.panel.removeClass("hidden").find('.title').html(d.description || d.title || d.name);
-        return _this.uis.panel.find('.description').html(d.description || d.title || d.name);
+        _this.uis.panel.removeClass("hidden").find('.title').removeClass("company person event").addClass(d.type).html(d.name || d.title || d.description);
+        return _this.uis.panel.find('.description').removeClass("company person event").addClass(d.type).html(d.description || d.title || d.name);
       }, 10);
     });
   };
@@ -324,7 +324,7 @@ network.Map = (function(_super) {
         clearTimeout(_this.hideLegendTimer);
         return _this.hideLegendTimer = setTimeout(function() {
           _this.uis.panel.addClass("hidden");
-          return setTimeout(function() {
+          return _this.hideLegendTimer = setTimeout(function() {
             return _this.uis.panel.css('display', 'none');
           }, 250);
         }, 100);

@@ -65,6 +65,17 @@
 		}
 	},
 	{
+		"type" : "event",
+		"title" : "Data, récits & cie",
+		"description" : "Conférence autour du journalisme de données.",
+		"img"  : "images/datasto.png",
+		"members" : ["vied12", "sebastien", "fred"],
+		"geo" :{
+			"lon": -73.55443,
+			"lat": 45.51229
+		}
+	},
+	{
 		"type" : "company",
 		"name" : "FFunction",
 		"id"   : "ffctn",
@@ -79,7 +90,8 @@
 	{
 		"type" : "company",
 		"name" : "We Do Data",
-		"github" : "",
+		"twitter" : "https://twitter.com/We_Do_Data",
+		"img"   : "images/wdd.png",
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -90,7 +102,17 @@
 		"name" : "Edouard Richard",
 		"img"  : "images/vied12.png",
 		"id"   : "vied12",
-		"github" : "https://github.com/gka",
+		"github" : "https://github.com/vied12",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
+		"type" : "person",
+		"name" : "Frederic Dubois",
+		"img"  : "images/frederic.png",
+		"id"   : "fred",
 		"geo" :{
 			"lon": 13.423653,
 			"lat": 52.473827
@@ -121,6 +143,7 @@
 		"type" : "company",
 		"name" : "Arte",
 		"link" : "arte.tv",
+		"img"   : "images/arte.png",
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -161,6 +184,7 @@
 		"type" : "company",
 		"name" : "Wikileaks",
 		"link" : "",
+		"img": "images/wl.png",
 		"geo" : {
 			"lon": -0.127177,
 			"lat": 51.506301
@@ -173,6 +197,20 @@
 		"location" : "la cantine, Paris",
 		"date" : "",
 		"link" : "",
+		"img" : "images/nasa.png",
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		},
+		"members" : ["vied12", "toutenrab"]
+	},
+	{
+		"type" : "event",
+		"title" : "Hackathon Open Data Lab",
+		"location" : "la cantine, Paris",
+		"date" : "",
+		"link" : "",
+		"img" : "images/opendatalab.png",
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -186,6 +224,7 @@
 		"location" : "Madrid",
 		"date" : "",
 		"link" : "",
+		"img"   : "images/madrid.png",
 		"geo" : {
 			"lon": -3.705802,
 			"lat": 40.420279
@@ -199,6 +238,7 @@
 		"location" : "Google inc",
 		"date" : "",
 		"link" : "",
+		"img"   : "images/google.png",
 		"geo" : {
 			"lon": -122.475586,
 			"lat": 37.791880
