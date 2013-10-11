@@ -71,7 +71,7 @@ class network.Map extends Widget
 			panel : '.Panel'
 		}
 
-		@ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick']
+		@ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick', 'eventclick']
 
 		@projection = undefined
 		@groupPaths = undefined
@@ -89,6 +89,7 @@ class network.Map extends Widget
 			.insert("svg", ":first-child")
 			.attr("width", @width)
 			.attr("height", @height)
+			.on("mousedown", => if @legendBlocked then @hideLegend(true)())
 
 		# Create projection
 		@projection = d3.geo.stereographic()
@@ -306,6 +307,13 @@ class network.Map extends Widget
 			setTimeout(=>
 				@uis.panel.removeClass("hidden").find('.title').removeClass("company person event").addClass(d.type).html(d.name || d.title || d.description)
 				@uis.panel.find('.description').removeClass("company person event").addClass(d.type).html(d.description || d.title || d.name)
+				$github = @uis.panel.find('.github')
+				if d.github?
+					$github.removeClass("hidden")
+					@set("followers", d.github.followers)
+					@set("repos", d.github.repos)
+				else
+					$github.addClass("hidden")
 			, 10)
 		)
 
@@ -343,7 +351,6 @@ class network.Map extends Widget
 				.attr("d", @path)
 				.attr("class", "country")
 				.attr("fill", (d) -> return d3.rgb("#5C5D62").darker(count[d.id] * 0.6 | 0))
-				# .on("mouseup")
 
 		# Cities
 		# @groupPaths.append("path")
@@ -380,6 +387,13 @@ class network.Map extends Widget
 		that = @
 		@closeAll()
 		@circles.filter((d) -> d.type=="company").each((d) ->
+			that.openCircle(d, d3.select(this))
+		)
+
+	eventclick: =>
+		that = @
+		@closeAll()
+		@circles.filter((d) -> d.type=="event").each((d) ->
 			that.openCircle(d, d3.select(this))
 		)
 

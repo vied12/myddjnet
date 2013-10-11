@@ -4,17 +4,22 @@
 		.Map.widget.primary data-widget=network.Map
 			.Controls.widget data-widget=network.Controls
 				.wrapper
-					.control.do data-action=personclick | Persons
-					.control.do data-action=jppclick | J++
-					.control.do data-action=companyclick | Companies
-					.control.do data-action=allclick | All
-					.control.do data-action=closeAll | Close All
+					.control.do.person  data-action=personclick  | Persons
+					.control.do.jpp     data-action=jppclick     | J++
+					.control.do.company data-action=companyclick | Companies
+					.control.do.event   data-action=eventclick   | Events
+					.control.do         data-action=allclick     | All
+					.control.do.close   data-action=closeAll     | Close All
 			.Panel.hidden
 				.wrapper
 					h2.title | {#title#}
 					p.description | {#description#}
+					div.github.hidden
+						> img src=static/images/github.png
+						| followers: <span data-field="followers"></span>&nbsp;&nbsp;repos: <span data-field="repos"></span>
 		.Title
 			h1 | Datajournalism powered by Open Source Projects
 			p | My network after more one year working in datajournalism thanks to Open Source
 
 {% endblock %}
+c

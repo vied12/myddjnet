@@ -63,9 +63,24 @@ body:
 		margin-top: 5px
 		cursor: pointer
 		-webkit-transition: "background-color .25s"
+		&.event: 
+			background-color: #FFF845
+		&.company: 
+			background-color: #FF7979
+		&.person: 
+			background-color: #A8D8FF
+	
+		&.close: 
+			background-color: #6D6D6D
+			color:white
+
+
 		&:hover:
 			background-color:#6D6D6D
 			color:white
+			&.close: 
+				background-color: #F5F5F5
+				color:black
 
 .Title:
 	overflow:hidden
@@ -85,12 +100,13 @@ body:
 		overflow : hidden
 		text-align: right
 		.wrapper:
-			padding-right : 20px
-		&.hidden:
-			display: none
-			opacity: 0
-		&.top:
-			background: "-webkit-gradient(linear, left bottom, left top, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)))"
+			position: absolute
+			bottom: 20px
+			width:auto
+			left: 20px
+			right:20px
+		*:
+			margin: 0px
 		.title:
 			&.person:
 				text-shadow: 3px 0 #A8D8FF, 0 1px #A8D8FF, 1px 0 #A8D8FF, 0 -1px #A8D8FF
@@ -100,8 +116,31 @@ body:
 				text-shadow: 3px 0 #FFF845, 0 1px #FFF845, 1px 0 #FFF845, 0 -1px #FFF845
 		.description:
 			&.person:
-				text-shadow: 1px 0 white, 0 1px white, 1px 0 white, 0 -1px white
+				text-shadow: 1px 0 #A8D8FF, 0 1px #A8D8FF, 1px 0 #A8D8FF, 0 -1px #A8D8FF
 			&.company:
 				text-shadow: 1px 0 #FF7979, 0 1px #FF7979, 1px 0 #FF7979, 0 -1px #FF7979
 			&.event:
 				text-shadow: 1px 0 #FFF845, 0 1px #FFF845, 1px 0 #FFF845, 0 -1px #FFF845
+		.github:
+			bottom: 0px
+			position: absolute
+			text-align:left
+			img:
+				width:8%
+				vertical-align: top
+		&.hidden:
+			display: none
+			opacity: 0
+		&.top:
+			background: "-webkit-gradient(linear, left bottom, left top, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)))"
+			.wrapper:
+				top: 20px
+				bottom: auto
+				.github:
+					top: 0px
+					bottom:auto
+					position: absolute
+					&:before:
+						content:"coucou"
+					img:
+						vertical-align: middle
