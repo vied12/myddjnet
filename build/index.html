@@ -15,17 +15,22 @@
 		<div data-widget="network.Map" class="Map widget primary">
 			<div data-widget="network.Controls" class="Controls widget">
 				<div class="wrapper">
-					<div data-action="personclick" class="control do">Persons</div>
-					<div data-action="jppclick" class="control do">J++</div>
-					<div data-action="companyclick" class="control do">Companies</div>
-					<div data-action="allclick" class="control do">All</div>
-					<div data-action="closeAll" class="control do">Close All</div>
+					<div  data-action="personclick"  class="control do person">Persons</div>
+					<div     data-action="jppclick"     class="control do jpp">J++</div>
+					<div data-action="companyclick" class="control do company">Companies</div>
+					<div   data-action="eventclick"   class="control do event">Events</div>
+					<div         data-action="allclick"     class="control do">All</div>
+					<div   data-action="closeAll"     class="control do close">Close All</div>
 				</div>
 			</div>
 			<div class="Panel hidden">
 				<div class="wrapper">
 					<h2 class="title"></h2>
 					<p class="description"></p>
+					<div class="github hidden">
+						<img src="static/images/github.png" />
+						followers: <span data-field="followers"></span>&nbsp;&nbsp;repos: <span data-field="repos"></span>
+					</div>
 				</div>
 			</div>
 		</div>

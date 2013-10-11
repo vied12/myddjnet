@@ -4,8 +4,8 @@
 		.Map.widget.primary data-widget=network.Map
 			.Controls.widget data-widget=network.Controls
 				.wrapper
-					.control.do.person  data-action=personclick  | Persons
 					.control.do.jpp     data-action=jppclick     | J++
+					.control.do.person  data-action=personclick  | Persons
 					.control.do.company data-action=companyclick | Companies
 					.control.do.event   data-action=eventclick   | Events
 					.control.do         data-action=allclick     | All

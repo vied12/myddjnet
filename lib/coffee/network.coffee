@@ -230,10 +230,16 @@ class network.Map extends Widget
 					ui   = d3.select(this)
 					open = e.radius == that.OPTIONS.big_radius
 					if open
-						that.closeCircle(e, ui)
+						if e.sticky? and e.sticky
+							that.closeCircle(e, ui)
+						else if e.sticky? and not e.sticky
+							that.stickMembers(e)
+						else
+							that.closeCircle(e, ui)
+							# 
 						if that._previousOver == e
 							that.hideLegend(true)(e)
-					else 
+					else
 						that.openCircle(e, ui, true)
 						that.showLegend(true)(e)
 				)
@@ -275,6 +281,7 @@ class network.Map extends Widget
 
 	stickMembers: (entry) =>
 		# links = []
+		entry.sticky = true
 		for e in @circles.filter((e) -> return e.id in entry.members)[0]
 			e = d3.select(e)
 			data = e.datum()
@@ -285,6 +292,7 @@ class network.Map extends Widget
 			@openCircle(data, e)
 
 	unStickMembers: (entry) =>
+		entry.sticky = false
 		@entries = @computeEntries(@entries)
 		for e in @circles.filter((e) -> return e.id in entry.members)[0]
 			e = d3.select(e)

@@ -48,6 +48,7 @@ network.Map = (function(_super) {
   function Map() {
     this.closeAll = __bind(this.closeAll, this);
     this.allclick = __bind(this.allclick, this);
+    this.eventclick = __bind(this.eventclick, this);
     this.companyclick = __bind(this.companyclick, this);
     this.personclick = __bind(this.personclick, this);
     this.jppclick = __bind(this.jppclick, this);
@@ -71,7 +72,7 @@ network.Map = (function(_super) {
     this.UIS = {
       panel: '.Panel'
     };
-    this.ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick'];
+    this.ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick', 'eventclick'];
     this.projection = void 0;
     this.groupPaths = void 0;
     this.path = void 0;
@@ -82,10 +83,15 @@ network.Map = (function(_super) {
   }
 
   Map.prototype.bindUI = function(ui) {
-    var graticule;
+    var graticule,
+      _this = this;
     Map.__super__.bindUI.apply(this, arguments);
     this.init_size();
-    this.svg = d3.select(this.ui.get(0)).insert("svg", ":first-child").attr("width", this.width).attr("height", this.height);
+    this.svg = d3.select(this.ui.get(0)).insert("svg", ":first-child").attr("width", this.width).attr("height", this.height).on("mousedown", function() {
+      if (_this.legendBlocked) {
+        return _this.hideLegend(true)();
+      }
+    });
     this.projection = d3.geo.stereographic().scale(this.width).rotate([55, -70]).clipAngle(90).translate([this.width / 2, this.height / 2]);
     this.path = d3.geo.path().projection(this.projection).pointRadius("2");
     this.groupPaths = this.svg.append("g").attr("class", "all-path");
@@ -306,8 +312,17 @@ network.Map = (function(_super) {
       }
       _this.uis.panel.css('display', 'block');
       return setTimeout(function() {
+        var $github;
         _this.uis.panel.removeClass("hidden").find('.title').removeClass("company person event").addClass(d.type).html(d.name || d.title || d.description);
-        return _this.uis.panel.find('.description').removeClass("company person event").addClass(d.type).html(d.description || d.title || d.name);
+        _this.uis.panel.find('.description').removeClass("company person event").addClass(d.type).html(d.description || d.title || d.name);
+        $github = _this.uis.panel.find('.github');
+        if (d.github != null) {
+          $github.removeClass("hidden");
+          _this.set("followers", d.github.followers);
+          return _this.set("repos", d.github.repos);
+        } else {
+          return $github.addClass("hidden");
+        }
       }, 10);
     });
   };
@@ -378,6 +393,17 @@ network.Map = (function(_super) {
     this.closeAll();
     return this.circles.filter(function(d) {
       return d.type === "company";
+    }).each(function(d) {
+      return that.openCircle(d, d3.select(this));
+    });
+  };
+
+  Map.prototype.eventclick = function() {
+    var that;
+    that = this;
+    this.closeAll();
+    return this.circles.filter(function(d) {
+      return d.type === "event";
     }).each(function(d) {
       return that.openCircle(d, d3.select(this));
     });

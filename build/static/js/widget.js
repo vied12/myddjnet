@@ -218,11 +218,11 @@ window.serious.Widget = (function() {
       context = value || this.ui;
       for (name in field) {
         _value = field[name];
-        context.find(".out[data-field=" + name + "]").html(_value);
+        context.find("[data-field=" + name + "]").html(_value);
       }
     } else {
       context = context || this.ui;
-      context.find(".out[data-field=" + field + "]").html(value);
+      context.find("[data-field=" + field + "]").html(value);
     }
     return context;
   };
