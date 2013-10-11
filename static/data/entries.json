@@ -3,7 +3,7 @@
 		"type" : "person",
 		"id" : "pirhoo",
 		"name" : "Pierre Romera",
-		"github" : "https://github.com/Pirhoo",
+		"github" : {"url":"https://github.com/Pirhoo", "followers": 46, "repos": 3},
 		"img"  : "images/pirhoo.png" ,
 		"geo" : {
 			"lon": 2.406004,
@@ -14,7 +14,7 @@
 		"type" : "person",
 		"id" : "toutenrab",
 		"name" : "Pierre Bellon",
-		"github" : "https://github.com/",
+		"github" : {"url":"https://github.com/", "followers": 10, "repos": 4},
 		"img"  : "images/toutenrab.png" ,
 		"geo" : {
 			"lon": 2.406004,
@@ -24,7 +24,7 @@
 	{
 		"type" : "person",
 		"name" : "Gregor Aisch",
-		"github" : "https://github.com/gka",
+		"github" : {"url":"https://github.com/gka", "followers": 243, "repos": 40},
 		"img"   : "images/gka.png",
 		"geo" : {
 			"lon": 13.423653,
@@ -46,6 +46,7 @@
 		"type" : "company",
 		"name" : "J++",
 		"img" : "images/jpp.png",
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 6.960279,
@@ -56,7 +57,7 @@
 	{
 		"type"   : "person",
 		"name"   : "Sebastien Pierre",
-		"github" : "https://github.com/sebastien",
+		"github" : {"url":"https://github.com/sebastien", "followers": 143, "repos": 19},
 		"img"    : "images/sebastien.png",
 		"id"     : "sebastien",
 		"geo"    : {
@@ -80,7 +81,6 @@
 		"name" : "FFunction",
 		"id"   : "ffctn",
 		"img"  : "images/ffctn.png",
-		"github" : "http://ffctn.com",
 		"geo" : {
 			"lon": -73.55443,
 			"lat": 45.51229
@@ -102,11 +102,23 @@
 		"name" : "Edouard Richard",
 		"img"  : "images/vied12.png",
 		"id"   : "vied12",
-		"github" : "https://github.com/vied12",
+		"github" : {"url":"https://github.com/vied12", "followers": 15, "repos": 10},
 		"geo" :{
 			"lon": 13.423653,
 			"lat": 52.473827
 		}
+	},
+	{
+		"type" : "company",
+		"name" : "J++",
+		"img" : "images/jpp.png",
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
+		"link" : "",
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		},
+		"members" : ["vied12", "annelise", "nkb"]
 	},
 	{
 		"type" : "person",
@@ -123,7 +135,7 @@
 		"name" : "Nicolas Kayer-Bril",
 		"id"   : "nkb",
 		"img"  : "images/nkb.png",
-		"github" : "https://github.com/gka",
+		"github" : {"url":"https://github.com/n-kb", "followers": 17, "repos": 4},
 		"geo" :{
 			"lon": 13.423653,
 			"lat": 52.473827
@@ -153,6 +165,7 @@
 		"type" : "company",
 		"name" : "J++",
 		"img" : "images/jpp.png",
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 18.062835,
@@ -163,6 +176,7 @@
 		"type" : "company",
 		"name" : "J++",
 		"img" : "images/jpp.png",
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 2.406004,
@@ -174,6 +188,7 @@
 		"type" : "company",
 		"name" : "J++",
 		"img" : "images/jpp.png",
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 4.893189,
@@ -198,6 +213,8 @@
 		"date" : "",
 		"link" : "",
 		"img" : "images/nasa.png",
+		"github" : {"url":"https://github.com/nasa", "followers": "-", "repos": 20},
+
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -215,7 +232,7 @@
 			"lon": 2.406004,
 			"lat": 48.731398
 		},
-		"members" : ["vied12", "toutenrab"]
+		"members" : ["vied12"]
 	},
 
 	{
@@ -239,6 +256,7 @@
 		"date" : "",
 		"link" : "",
 		"img"   : "images/google.png",
+		"github": {"url":"https://github.com/google/", "followers": "-", "repos": 78},
 		"geo" : {
 			"lon": -122.475586,
 			"lat": 37.791880
