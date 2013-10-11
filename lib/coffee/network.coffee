@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Project : Network
 # -----------------------------------------------------------------------------
-# Author : Edouard Richard                                  <edou4rdthat.gmail.com>
+# Author : Edouard Richard                                  <edou4rd@gmail.com>
 # -----------------------------------------------------------------------------
 # License : MIT licence
 # -----------------------------------------------------------------------------
@@ -304,8 +304,8 @@ class network.Map extends Widget
 
 			@uis.panel.css('display','block')
 			setTimeout(=>
-				@uis.panel.removeClass("hidden").find('.title').html(d.description || d.title || d.name)
-				@uis.panel.find('.description').html(d.description || d.title || d.name)
+				@uis.panel.removeClass("hidden").find('.title').removeClass("company person event").addClass(d.type).html(d.name || d.title || d.description)
+				@uis.panel.find('.description').removeClass("company person event").addClass(d.type).html(d.description || d.title || d.name)
 			, 10)
 		)
 
@@ -317,7 +317,7 @@ class network.Map extends Widget
 				clearTimeout(@hideLegendTimer)
 				@hideLegendTimer = setTimeout(=>
 					@uis.panel.addClass("hidden")
-					setTimeout(=>
+					@hideLegendTimer = setTimeout(=>
 						@uis.panel.css('display','none')
 					, 250)
 				,100)
@@ -343,6 +343,7 @@ class network.Map extends Widget
 				.attr("d", @path)
 				.attr("class", "country")
 				.attr("fill", (d) -> return d3.rgb("#5C5D62").darker(count[d.id] * 0.6 | 0))
+				# .on("mouseup")
 
 		# Cities
 		# @groupPaths.append("path")

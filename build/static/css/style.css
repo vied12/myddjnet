@@ -1,0 +1,155 @@
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.Map {
+  position: relative;
+}
+
+.Map .graticule {
+  fill: none;
+  stroke: #777777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.Map .country {
+  -webkit-transition: fill 0.25s linear;
+  stroke: #8f9092;
+  stroke-width: 1px;
+  stroke-opacity: 0.4;
+}
+
+.Map .country:hover {
+  fill: #4c4747;
+}
+
+.Map .city {
+  font-size: 0.7em;
+}
+
+.Map .entity circle {
+  stroke-width: 2px;
+  stroke: #9f9f9f;
+}
+
+.Map .entity circle:hover {
+  fill: #616161;
+}
+
+.Map .entity.person circle {
+  stroke: #a8d8ff;
+}
+
+.Map .entity.company circle {
+  stroke: #ff7979;
+}
+
+.Map .entity.event circle {
+  stroke: #fff845;
+}
+
+.Map .dialog {
+  background-color: green;
+}
+
+.Map .legend {
+  color: white;
+}
+
+.Map .legend.line {
+  stroke: white;
+}
+
+.Map .legend.text {
+  font-size: 1em;
+  fill: #ffffff;
+  font-size: 1.2em;
+  text-shadow: -1px 0 #2b2b2b, 0 1px #2b2b2b, 1px 0 #2b2b2b, 0 -1px #2b2b2b;
+}
+
+.Controls {
+  position: absolute;
+  top: 5px;
+  left: 2px;
+  font-size: 0.8em;
+}
+
+.Controls .control {
+  text-align: right;
+  background-color: #f5f5f5;
+  padding: 0px 5px;
+  margin-top: 5px;
+  cursor: pointer;
+  -webkit-transition: background-color .25s;
+}
+
+.Controls .control:hover {
+  background-color: #6d6d6d;
+  color: white;
+}
+
+.Title {
+  overflow: hidden;
+  min-height: 100px;
+}
+
+.primary.Map {
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.primary.Map svg {
+  border: 2px solid #444444;
+  background-color: #e7eaf7;
+}
+
+.primary.Map .Panel {
+  transition: opacity .25s;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)));
+  position: relative;
+  overflow: hidden;
+  text-align: right;
+}
+
+.primary.Map .Panel .wrapper {
+  padding-right: 20px;
+}
+
+.primary.Map .Panel.hidden {
+  display: none;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.primary.Map .Panel.top {
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)));
+}
+
+.primary.Map .Panel .title.person {
+  text-shadow: 3px 0 #a8d8ff, 0 1px #a8d8ff, 1px 0 #a8d8ff, 0 -1px #a8d8ff;
+}
+
+.primary.Map .Panel .title.company {
+  text-shadow: 3px 0 #ff7979, 0 1px #ff7979, 1px 0 #ff7979, 0 -1px #ff7979;
+}
+
+.primary.Map .Panel .title.event {
+  text-shadow: 3px 0 #fff845, 0 1px #fff845, 1px 0 #fff845, 0 -1px #fff845;
+}
+
+.primary.Map .Panel .description.person {
+  text-shadow: 1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+.primary.Map .Panel .description.company {
+  text-shadow: 1px 0 #ff7979, 0 1px #ff7979, 1px 0 #ff7979, 0 -1px #ff7979;
+}
+
+.primary.Map .Panel .description.event {
+  text-shadow: 1px 0 #fff845, 0 1px #fff845, 1px 0 #fff845, 0 -1px #fff845;
+}

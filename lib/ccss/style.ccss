@@ -35,7 +35,7 @@ body:
 		&.company circle:
 			stroke: #FF7979
 		&.event circle:
-			stroke: #C9C100
+			stroke: #FFF845
 
 	.dialog:
 		background-color : green
@@ -92,4 +92,16 @@ body:
 		&.top:
 			background: "-webkit-gradient(linear, left bottom, left top, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)))"
 		.title:
-			text-shadow: 3px 0 #EBEBEB, 0 1px #EBEBEB, 1px 0 #EBEBEB, 0 -1px #EBEBEB
+			&.person:
+				text-shadow: 3px 0 #A8D8FF, 0 1px #A8D8FF, 1px 0 #A8D8FF, 0 -1px #A8D8FF
+			&.company:
+				text-shadow: 3px 0 #FF7979, 0 1px #FF7979, 1px 0 #FF7979, 0 -1px #FF7979
+			&.event:
+				text-shadow: 3px 0 #FFF845, 0 1px #FFF845, 1px 0 #FFF845, 0 -1px #FFF845
+		.description:
+			&.person:
+				text-shadow: 1px 0 white, 0 1px white, 1px 0 white, 0 -1px white
+			&.company:
+				text-shadow: 1px 0 #FF7979, 0 1px #FF7979, 1px 0 #FF7979, 0 -1px #FF7979
+			&.event:
+				text-shadow: 1px 0 #FFF845, 0 1px #FFF845, 1px 0 #FFF845, 0 -1px #FFF845
