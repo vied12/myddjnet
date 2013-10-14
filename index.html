@@ -15,16 +15,21 @@
 		<div data-widget="network.Map" class="Map widget primary">
 			<div data-widget="network.Controls" class="Controls widget">
 				<div class="wrapper">
-					<div  data-action="personclick"  class="control do person">Persons</div>
-					<div     data-action="jppclick"     class="control do jpp">J++</div>
-					<div data-action="companyclick" class="control do company">Companies</div>
-					<div   data-action="eventclick"   class="control do event">Events</div>
-					<div         data-action="allclick"     class="control do">All</div>
-					<div   data-action="closeAll"     class="control do close">Close All</div>
+					<div data-action="ffctnclick"     class="control do company">FFunction</div>
+					<div   data-action="datastoryclick" class="control do event">Data, récits & cie</div>
+					<div     data-action="jppclick"       class="control do jpp">Journalism ++</div>
+					<!-- .control.do.person  data-action=personclick    | Persons -->
+					<div data-action="companyclick"   class="control do company">Partners & Clients</div>
+					<div   data-action="eventclick"     class="control do event">Events</div>
+					<div         data-action="allclick"       class="control do">All</div>
+					<div   data-action="closeAll"       class="control do close">Close All</div>
 				</div>
 			</div>
 			<div class="Panel hidden">
 				<div class="wrapper">
+					<div class="icone">
+						<img />
+					</div>
 					<h2 class="title"></h2>
 					<p class="description"></p>
 					<div class="github hidden">
@@ -45,6 +50,7 @@
 		<script type="text/javascript" src="static/js/d3.js"                     ></script>
 		<script type="text/javascript" src="static/js/topojson.js"                     ></script>
 		<script type="text/javascript" src="static/js/queue.js"                     ></script>
+		<script type="text/javascript" src="static/js/raf.js"                     ></script>
 		<script type="text/javascript" src="static/js/network.js"                     ></script>
 		<!-- script type="text/javascript" src="static/js/formatting.js"                   |  -->
 	</body>
