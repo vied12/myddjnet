@@ -481,7 +481,7 @@ network.Map = (function(_super) {
   Map.prototype.companyclick = function() {
     var partners, that;
     that = this;
-    this.viewGlobal();
+    this.viewEurope();
     this.closeAll();
     partners = ["dataninja", "wikileaks", "arte", "wedodata", 'okf'];
     return this.circles.filter(function(d) {
@@ -507,6 +507,7 @@ network.Map = (function(_super) {
   Map.prototype.allclick = function() {
     var that;
     that = this;
+    this.closeAll();
     this.viewGlobal();
     return this.circles.each(function(d) {
       return that.openCircle(d, d3.select(this));
