@@ -185,6 +185,7 @@
 		"link" : "arte.tv",
 		"id"   : "arte",
 		"img"   : "images/arte.png",
+		"description" : "Réalitation d'un web-documentaire \"La Contre Histoire des Internets\"",
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -233,6 +234,7 @@
 		"name" : "Wikileaks",
 		"id"   : "wikileaks",
 		"link" : "",
+		"description" : "Analyse sémentique des cables diplomatiques pour pouvoir les représenter dans le temps",
 		"img": "images/wl.png",
 		"geo" : {
 			"lon": -0.127177,
