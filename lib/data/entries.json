@@ -12,6 +12,17 @@
 	},
 	{
 		"type" : "person",
+		"id" : "paulloz",
+		"name" : "Paul Joannon",
+		"github" : {"url":"https://github.com/Paulloz", "followers": 15, "repos": 6},
+		"img"  : "images/paul.png" ,
+		"geo" : {
+			"lon": 2.406004,
+			"lat": 48.731398
+		}
+	},
+	{
+		"type" : "person",
 		"id" : "toutenrab",
 		"name" : "Pierre Bellon",
 		"github" : {"url":"https://github.com/", "followers": 10, "repos": 4},
@@ -45,8 +56,9 @@
 	{
 		"type" : "company",
 		"name" : "J++",
+		"description" : "Cologne",
 		"img" : "images/jpp.png",
-		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "n/a", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 6.960279,
@@ -70,7 +82,8 @@
 		"title" : "Data, récits & cie",
 		"description" : "Conférence autour du journalisme de données.",
 		"img"  : "images/datasto.png",
-		"members" : ["vied12", "sebastien", "fred"],
+		"date" : "6/9/2012",
+		"members" : ["vied12", "sebastien", "fred", "lorz"],
 		"geo" :{
 			"lon": -73.55443,
 			"lat": 45.51229
@@ -91,6 +104,7 @@
 		"type" : "company",
 		"name" : "We Do Data",
 		"twitter" : "https://twitter.com/We_Do_Data",
+		"id"   : "wedodata",
 		"img"   : "images/wdd.png",
 		"geo" : {
 			"lon": 2.406004,
@@ -109,10 +123,22 @@
 		}
 	},
 	{
+		"type" : "person",
+		"name" : "Lorenz Matzat",
+		"img"  : "images/lorenz.png",
+		"id"   : "lorz",
+		"github" : {"url":"https://github.com/Lorzer", "followers": 4, "repos": 0},
+		"geo" :{
+			"lon": 13.423653,
+			"lat": 52.473827
+		}
+	},
+	{
 		"type" : "company",
 		"name" : "J++",
+		"description" : "Berlin",
 		"img" : "images/jpp.png",
-		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "n/a", "repos": 20},
 		"link" : "",
 		"geo" :{
 			"lon": 13.423653,
@@ -123,6 +149,7 @@
 	{
 		"type" : "person",
 		"name" : "Frederic Dubois",
+		"description" : "Journaliste",
 		"img"  : "images/frederic.png",
 		"id"   : "fred",
 		"geo" :{
@@ -133,6 +160,7 @@
 	{
 		"type" : "person",
 		"name" : "Nicolas Kayer-Bril",
+		"description" : "Journaliste, Président de J++",
 		"id"   : "nkb",
 		"img"  : "images/nkb.png",
 		"github" : {"url":"https://github.com/n-kb", "followers": 17, "repos": 4},
@@ -155,7 +183,9 @@
 		"type" : "company",
 		"name" : "Arte",
 		"link" : "arte.tv",
+		"id"   : "arte",
 		"img"   : "images/arte.png",
+		"description" : "Réalitation d'un web-documentaire \"La Contre Histoire des Internets\"",
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
@@ -164,8 +194,9 @@
 	{
 		"type" : "company",
 		"name" : "J++",
+		"description" : "Stockholm",
 		"img" : "images/jpp.png",
-		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "n/a", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 18.062835,
@@ -176,19 +207,22 @@
 		"type" : "company",
 		"name" : "J++",
 		"img" : "images/jpp.png",
-		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
+		"description" : "Paris",
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "n/a", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 2.406004,
 			"lat": 48.731398
 		},
-		"members" : ["pirhoo", "toutenrab"]
+		"members" : ["pirhoo", "toutenrab", "paulloz"]
 	},
 		{
 		"type" : "company",
 		"name" : "J++",
 		"img" : "images/jpp.png",
-		"github" : {"url":"https://github.com/jplusplus/", "followers": "-", "repos": 20},
+		"description" : "Amsterdam",
+
+		"github" : {"url":"https://github.com/jplusplus/", "followers": "n/a", "repos": 20},
 		"link" : "",
 		"geo" : {
 			"lon": 4.893189,
@@ -198,11 +232,36 @@
 	{
 		"type" : "company",
 		"name" : "Wikileaks",
+		"id"   : "wikileaks",
 		"link" : "",
+		"description" : "Analyse sémentique des cables diplomatiques pour pouvoir les représenter dans le temps",
 		"img": "images/wl.png",
 		"geo" : {
 			"lon": -0.127177,
 			"lat": 51.506301
+		}
+	},
+	{
+		"type" : "company",
+		"name" : "The Open Knowledge Foundation",
+		"id"   : "okf",
+		"link" : "",
+		"img": "images/okf.png",
+		"geo" : {
+			"lon": -0.127177,
+			"lat": 51.506301
+		}
+	},
+
+	{
+		"type" : "company",
+		"name" : "Dataninja",
+		"id"   : "dataninja",
+		"link" : "",
+		"img": "images/dataninja.png",
+		"geo" : {
+			"lon": 11.254959,
+			"lat": 43.782361
 		}
 	},
 
@@ -213,7 +272,7 @@
 		"date" : "",
 		"link" : "",
 		"img" : "images/nasa.png",
-		"github" : {"url":"https://github.com/nasa", "followers": "-", "repos": 20},
+		"github" : {"url":"https://github.com/nasa", "followers": "n/a", "repos": 20},
 
 		"geo" : {
 			"lon": 2.406004,
@@ -251,12 +310,27 @@
 
 	{
 		"type" : "event",
-		"title" : "Rencontre à Montain View à propos de spending stories",
+		"title" : "Winter School in Istanbul",
+		"location" : "Madrid",
+		"date" : "",
+		"link" : "",
+		"img"   : "images/istanbul.png",
+		"geo" : {
+			"lon": 28.975048,
+			"lat": 41.027979
+		},
+		"members" : ["vied12", "pirhoo", "nkb", "annelise", "toutenrab", "paulloz"]
+	},
+
+	{
+		"type" : "event",
+		"title" : "Montain View",
+		"description" : "Rencontre à Montain View à propos de Spending Stories",
 		"location" : "Google inc",
 		"date" : "",
 		"link" : "",
 		"img"   : "images/google.png",
-		"github": {"url":"https://github.com/google/", "followers": "-", "repos": 78},
+		"github": {"url":"https://github.com/google/", "followers": "n/a", "repos": 78},
 		"geo" : {
 			"lon": -122.475586,
 			"lat": 37.791880

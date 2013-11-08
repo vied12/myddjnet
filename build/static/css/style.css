@@ -5,6 +5,7 @@ body {
 }
 
 .Map {
+  background-color: #f2f2f2;
   position: relative;
 }
 
@@ -101,6 +102,7 @@ body {
 .Controls .control.close {
   background-color: #6d6d6d;
   color: white;
+  margin-top: 20px;
 }
 
 .Controls .control:hover {
@@ -128,8 +130,13 @@ body {
   background-color: #e7eaf7;
 }
 
+.primary.Map svg .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
 .primary.Map .Panel {
-  transition: opacity .25s;
+  transition: opacity .55s;
   opacity: 1;
   filter: alpha(opacity=100);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(99%,rgba(240,240,240,1)), color-stop(100%,rgba(242,242,242,1)));
@@ -150,38 +157,25 @@ body {
   margin: 0px;
 }
 
-.primary.Map .Panel .title.person {
-  text-shadow: 3px 0 #a8d8ff, 0 1px #a8d8ff, 1px 0 #a8d8ff, 0 -1px #a8d8ff;
+.primary.Map .Panel .icone {
+  float: right;
 }
 
-.primary.Map .Panel .title.company {
-  text-shadow: 3px 0 #ff7979, 0 1px #ff7979, 1px 0 #ff7979, 0 -1px #ff7979;
-}
-
-.primary.Map .Panel .title.event {
-  text-shadow: 3px 0 #fff845, 0 1px #fff845, 1px 0 #fff845, 0 -1px #fff845;
-}
-
-.primary.Map .Panel .description.person {
-  text-shadow: 1px 0 #a8d8ff, 0 1px #a8d8ff, 1px 0 #a8d8ff, 0 -1px #a8d8ff;
-}
-
-.primary.Map .Panel .description.company {
-  text-shadow: 1px 0 #ff7979, 0 1px #ff7979, 1px 0 #ff7979, 0 -1px #ff7979;
-}
-
-.primary.Map .Panel .description.event {
-  text-shadow: 1px 0 #fff845, 0 1px #fff845, 1px 0 #fff845, 0 -1px #fff845;
+.primary.Map .Panel .icone img {
+  width: 60px;
+  margin-left: 20px;
 }
 
 .primary.Map .Panel .github {
   bottom: 0px;
   position: absolute;
   text-align: left;
+  font-size: 1.3em;
+  line-height: 38px;
 }
 
 .primary.Map .Panel .github img {
-  width: 8%;
+  width: 13%;
   vertical-align: top;
 }
 

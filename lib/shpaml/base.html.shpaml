@@ -14,6 +14,7 @@ html lang="en"
 		script type="text/javascript" src="{{url_for('static', filename='js/d3.js')   }}"                      | {# #}
 		script type="text/javascript" src="{{url_for('static', filename='js/topojson.js')   }}"                      | {# #}
 		script type="text/javascript" src="{{url_for('static', filename='js/queue.js')   }}"                      | {# #}
+		script type="text/javascript" src="{{url_for('static', filename='js/raf.js')   }}"                      | {# #}
 		script type="text/javascript" src="{{url_for('static', filename='js/network.js')   }}"                      | {# #}
 		<!-- script type="text/javascript" src="{{url_for('static', filename='js/formatting.js')  }}"                   | {# #} -->
 

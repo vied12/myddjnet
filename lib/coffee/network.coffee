@@ -64,14 +64,14 @@ class network.Map extends Widget
 	constructor: ->
 		@OPTIONS =
 			map_ratio    : .5
-			litle_radius : 4
-			big_radius   : 20
+			litle_radius : 5
+			big_radius   : 23
 
 		@UIS = {
 			panel : '.Panel'
 		}
 
-		@ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick', 'eventclick']
+		@ACTIONS = ['jppclick', 'closeAll', 'companyclick', 'allclick', 'personclick', 'eventclick', 'ffctnclick', 'datastoryclick']
 
 		@projection = undefined
 		@groupPaths = undefined
@@ -80,8 +80,14 @@ class network.Map extends Widget
 		@width      = undefined
 		@height     = undefined
 		@hideLegendTimer = undefined
+		@initialRotation = [55,-70, 0]
 		# @panel      = undefined
 
+	# zoomed: => 
+	# 	console.log('doudou')
+	# 	@groupPaths.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+	# 	# @groupPaths.select(".state-border").style("stroke-width", 1.5 / d3.event.scale + "px")
+	# 	# @groupPaths.select(".county-border").style("stroke-width", .5 / d3.event.scale + "px")
 	bindUI: (ui) =>
 		super
 		@init_size()
@@ -91,16 +97,25 @@ class network.Map extends Widget
 			.attr("height", @height)
 			.on("mousedown", => if @legendBlocked then @hideLegend(true)())
 
+		# @zoom = d3.behavior.zoom()
+		# 	.translate([0, 0])
+		# 	.scale(1)
+		# 	.scaleExtent([1, 8])
+		# 	.on("zoom", @zoomed)
+
+
+
 		# Create projection
 		@projection = d3.geo.stereographic()
-					.scale(@width)
-					.rotate([55,-70])
 					.clipAngle(90)
+					.scale(@width)
+					.rotate(@initialRotation)
 					# .clipAngle(450)
 					# .translate([680, 250])
 					.translate([@width / 2, @height / 2])
+
 		# Create the globe path
-		@path = d3.geo.path().projection(@projection).pointRadius("2") 
+		@path = d3.geo.path().projection(@projection)
 		 # Create the group of path and add graticule
 		@groupPaths = @svg.append("g").attr("class", "all-path")
 		graticule   = d3.geo.graticule()
@@ -108,6 +123,11 @@ class network.Map extends Widget
 					.datum(graticule)
 					.attr("class", "graticule")
 					.attr("d", @path)
+		# @svg.append("rect")
+		# 	.attr("class", "overlay")
+		# 	.attr("width", @width)
+		# 	.attr("height", @height)
+		# 	.call(@zoom)
 		# binds events
 		d3.select(window).on('resize', @init_size)
 		queue()
@@ -169,13 +189,15 @@ class network.Map extends Widget
 		@renderEntries()
 
 	computeEntries: (entries) =>
+		# @projection.attr("rotate")
+		# @projection.transition().duration(250).rotate(20)
 		for entry in entries
 			coord = if entry.geo then @projection([entry.geo.lon, entry.geo.lat]) else [0,0]
 			entry.qx = coord[0]
 			entry.qy = coord[1]
 			entry.gx = entry.qx
 			entry.gy = entry.qy
-			entry.radius = @OPTIONS.litle_radius
+			entry.radius = @OPTIONS.litle_radius unless entry.radius
 			entry
 
 	collide: (alpha) ->
@@ -312,17 +334,26 @@ class network.Map extends Widget
 				@uis.panel.css('top', -@uis.panel.height() - 3)
 
 			@uis.panel.css('display','block')
-			setTimeout(=>
-				@uis.panel.removeClass("hidden").find('.title').removeClass("company person event").addClass(d.type).html(d.name || d.title || d.description)
-				@uis.panel.find('.description').removeClass("company person event").addClass(d.type).html(d.description || d.title || d.name)
-				$github = @uis.panel.find('.github')
-				if d.github?
-					$github.removeClass("hidden")
-					@set("followers", d.github.followers)
-					@set("repos", d.github.repos)
-				else
-					$github.addClass("hidden")
-			, 10)
+			# setTimeout(=>
+			@uis.panel.removeClass("hidden").find('.title')
+				.removeClass("company person event")
+				.addClass(d.type)
+				.html(d.name || d.title || d.description)
+
+			@uis.panel.find('.description')
+				.removeClass("company person event")
+				.addClass(d.type)
+				.html(d.description || d.title || if d.id then "@#{d.id}" else false || d.name)
+
+			@uis.panel.find(".icone img").attr("src", "static/"+d.img)
+			$github = @uis.panel.find('.github')
+			if d.github?
+				$github.removeClass("hidden")
+				@set("followers", d.github.followers)
+				@set("repos", d.github.repos)
+			else
+				$github.addClass("hidden")
+			# , 10)
 		)
 
 	hideLegend:(force_blocked=false) =>
@@ -377,15 +408,80 @@ class network.Map extends Widget
 		# 		.attr("x", (d) -> return if d.geometry.coordinates[0] > -1 then 6 else -6)
 		# 		.style("text-anchor", (d) -> return if d.geometry.coordinates[0] > -1 then "start" else "end")
 
+	rotate:(_rotation, _scale, _translate) =>
+		@n_rotation  = if _rotation? then _rotation else @n_rotation
+		@n_scale     = if _scale? then _scale else @n_scale
+		@n_translate = if _translate? then _translate else @n_translate
+		return (timestamp) =>
+			if not @start?
+				@start = timestamp
+			progress = timestamp - @start
+			rotation = @projection.rotate()
+			rotation[0]  += (@n_rotation[0] - rotation[0]) * progress/1000
+			rotation[1]  += (@n_rotation[1] - rotation[1]) * progress/1000
+			scale         = @projection.scale()
+			scale        += (@n_scale - scale) * progress/1000
+			translate     = @projection.translate()
+			translate[0] += (@n_translate[0] - translate[0]) * progress/1000
+			translate[1] += (@n_translate[1] - translate[1]) * progress/1000
+			@projection
+				.scale(scale)
+				.rotate(rotation)
+				.translate(translate)
+			# @init_size()
+			@groupPathsSelection = @groupPaths.selectAll("path") unless @groupPathsSelection
+			# # console.log @n_rotation, @n_scale, @n_translate, @groupPathsSelection, @path
+			@groupPathsSelection.attr("d", @path)
+			# # @path = d3.geo.path().projection(@projection).pointRadius("2")
+			# # @groupPaths.attr('d', @path)
+			@entries = @computeEntries(@entries)
+			if progress < 1000
+				requestAnimationFrame @rotate()
+			else
+				@start =undefined
+
+	viewGlobal: =>
+		console.log('viewGlobal')
+		if @currentView != "global"
+			@animationRequest = requestAnimationFrame @rotate(@initialRotation, @width, [@width / 2, @height / 2])
+		@currentView = "global"
+
+	viewEurope: =>
+		console.log('viewEurope')
+		if @currentView != "europe"
+			@animationRequest = requestAnimationFrame @rotate([0,-60], @width * 2.7, [400, 70])
+		@currentView = "europe"
+		
+	ffctnclick: =>
+		that = @
+		@viewGlobal()
+		@closeAll()
+		@circles.filter((d) -> d.name=="FFunction").each((d) ->
+			that.openCircle(d, d3.select(this), true)
+		)
+
+	datastoryclick: =>
+		that = @
+		@viewGlobal()
+		@closeAll()
+		@circles.filter((d) -> d.title=="Data, récits & cie").each((d) ->
+			that.openCircle(d, d3.select(this), true)
+		)
+
 	jppclick: =>
 		that = @
+		@viewEurope()
 		@closeAll()
+		@animationRequest = requestAnimationFrame @rotate([0,-60], @width * 2.7, [400, 70])
+		# setTimeout(=>
 		@circles.filter((d) -> d.name=="J++").each((d) ->
-			that.openCircle(d, d3.select(this))
+			that.openCircle(d, d3.select(this), true)
 		)
+		# , 1000)
 
 	personclick: =>
 		that = @
+		@viewGlobal()
 		@closeAll()
 		@circles.filter((d) -> d.type=="person").each((d) ->
 			that.openCircle(d, d3.select(this))
@@ -393,13 +489,16 @@ class network.Map extends Widget
 
 	companyclick: =>
 		that = @
+		@viewEurope()
 		@closeAll()
-		@circles.filter((d) -> d.type=="company").each((d) ->
+		partners = ["dataninja", "wikileaks", "arte", "wedodata", 'okf']
+		@circles.filter((d) -> d.id in partners).each((d) ->
 			that.openCircle(d, d3.select(this))
 		)
 
 	eventclick: =>
 		that = @
+		@viewGlobal()
 		@closeAll()
 		@circles.filter((d) -> d.type=="event").each((d) ->
 			that.openCircle(d, d3.select(this))
@@ -407,6 +506,8 @@ class network.Map extends Widget
 
 	allclick: =>
 		that = @
+		@closeAll()
+		@viewGlobal()
 		@circles.each((d) -> that.openCircle(d, d3.select(this)))
 
 	closeAll: =>
